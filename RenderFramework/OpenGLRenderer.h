@@ -2,6 +2,8 @@
 
 #include "stdafx.h"
 
+#include "Program.h"
+
 namespace RenderFramework
 {
 	class OpenGLRenderer
@@ -11,6 +13,8 @@ namespace RenderFramework
 		GLFWwindow* window;
 		// Window title
 		std::string title;
+		// Current Program
+		std::shared_ptr<Program> program;
 		// Flag indicating that the OpenGLRenderer is still running
 		bool running;
 		// The width of the window used by the OpenGLRenderer
@@ -31,10 +35,15 @@ namespace RenderFramework
 
 		// Initialises the OpenGLRenderer and creates a window
 		static bool initialise();
-		// Renders the current scene
-		static bool render();
+		// Begins a render
+		static bool beginRender();
+		// Ends a render
+		static bool endRender();
 		// Shutsdown the OpenGLRenderer
 		static void shutdown();
+
+		// Uses a Program
+		static bool useProgram(std::shared_ptr<Program> value);
 
 		/*
 		GETTERS AND SETTERS

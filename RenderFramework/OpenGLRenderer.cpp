@@ -54,6 +54,7 @@ namespace RenderFramework
 #endif
 
 		// Initialise GLEW
+		glewExperimental = GL_TRUE;
 		auto status = glewInit();
 		if (status != GLEW_OK)
 		{
@@ -69,7 +70,7 @@ namespace RenderFramework
 		return true;
 	}
 
-	bool OpenGLRenderer::render()
+	bool OpenGLRenderer::beginRender()
 	{
 		if (!instance->running)
 		{
@@ -90,6 +91,19 @@ namespace RenderFramework
 
 		glClear(GL_COLOR_BUFFER_BIT);
 
+		return true;
+	}
+
+	bool OpenGLRenderer::endRender()
+	{
+		if (!instance->running)
+		{
+#if defined(_DEBUG)
+			std::cerr << "ERROR - OpenGLRenderer is not running" << std::endl;
+#endif
+			return false;
+		}
+
 		glfwSwapBuffers(instance->window);
 
 		glfwPollEvents();
@@ -100,6 +114,22 @@ namespace RenderFramework
 	void OpenGLRenderer::shutdown()
 	{
 		glfwTerminate();
+	}
+
+	bool OpenGLRenderer::useProgram(std::shared_ptr<Program> value)
+	{
+		// Check for valid Program
+		if (value == nullptr)
+		{
+#if defined(_DEBUG)
+			std::cerr << "ERROR - Trying to use invalid Program" << std::endl;
+#endif
+			return false;
+		}
+		instance->program = value;
+		glUseProgram(value->id);
+		// TODO: CHECK_GL_ERROR
+		return true;
 	}
 
 	/*
