@@ -4,7 +4,17 @@
 
 namespace RenderFramework
 {
-	std::shared_ptr<OpenGLRenderer> OpenGLRenderer::instance = std::make_shared<OpenGLRenderer>();
+	OpenGLRenderer* OpenGLRenderer::instance = new OpenGLRenderer();
+
+	OpenGLRenderer::OpenGLRenderer()
+		: title("Render Framework"), width(640), height(480)
+	{
+	}
+
+	OpenGLRenderer::~OpenGLRenderer()
+	{
+		shutdown();
+	}
 
 	bool OpenGLRenderer::initialise()
 	{
@@ -54,6 +64,8 @@ namespace RenderFramework
 			return false;
 		}
 
+		instance->running = true;
+
 		return true;
 	}
 
@@ -83,5 +95,57 @@ namespace RenderFramework
 		glfwPollEvents();
 
 		return true;
+	}
+
+	void OpenGLRenderer::shutdown()
+	{
+		glfwTerminate();
+	}
+
+	/*
+	GETTERS AND SETTERS
+	*/
+
+	GLFWwindow* OpenGLRenderer::getWindow()
+	{
+		return instance->window;
+	}
+
+	std::string OpenGLRenderer::getTitle()
+	{
+		return instance->title;
+	}
+
+	void OpenGLRenderer::setTitle(const std::string& value)
+	{
+		instance->title = value;
+		glfwSetWindowTitle(instance->window, instance->title.c_str());
+	}
+
+	bool OpenGLRenderer::isRunning()
+	{
+		return instance->running;
+	}
+
+	void OpenGLRenderer::setRunning(bool value)
+	{
+		instance->running = value;
+	}
+
+	unsigned int OpenGLRenderer::getWidth()
+	{
+		return instance->width;
+	}
+
+	unsigned int OpenGLRenderer::getHeight()
+	{
+		return instance->height;
+	}
+
+	void OpenGLRenderer::setSize(unsigned int width, unsigned int height)
+	{
+		instance->width = width;
+		instance->height = height;
+		glfwSetWindowSize(instance->window, instance->width, instance->height);
 	}
 }

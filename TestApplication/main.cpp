@@ -1,7 +1,5 @@
 #include <RenderFramework.h>
 
-int width = 0, height = 0;
-
 int main()
 {
 	if (!RenderFramework::OpenGLRenderer::initialise())
@@ -12,6 +10,8 @@ int main()
 	{
 		RenderFramework::OpenGLRenderer::render();
 	}
+
+	RenderFramework::OpenGLRenderer::shutdown();
 
 	exit(EXIT_SUCCESS);
 }
