@@ -21,13 +21,16 @@ void loadContent()
 	auto program = RenderFramework::ContentManager::createProgram("basic", { "basic_vert", "basic_frag" });
 	RenderFramework::OpenGLRenderer::useProgram(program);
 
-	GLuint vao;
+	/*GLuint vao;
 	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);
+	glBindVertexArray(vao);*/
 
 	GLint posAttrib = glGetAttribLocation(program->id, "position");
 	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
 	glEnableVertexAttribArray(posAttrib);
+
+	GLint uniColour = glGetUniformLocation(program->id, "triangle_colour");
+	glUniform3f(uniColour, 1.0f, 0.0f, 0.0f);
 }
 
 void render()

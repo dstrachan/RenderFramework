@@ -155,6 +155,26 @@ namespace RenderFramework
 		std::clog << "LOG - Program " << name << " built" << std::endl;
 #endif
 
+		// Get Uniforms
+		GLint uniforms;
+		glGetProgramiv(value->id, GL_ACTIVE_UNIFORMS, &uniforms);
+		GLint length;
+		glGetProgramiv(value->id, GL_ACTIVE_UNIFORM_MAX_LENGTH, &length);
+		std::vector<char> buffer(length);
+
+		// Iterate Uniforms and add to Program object
+		GLenum type;
+		GLsizei name_length;
+		GLint size;
+		for (auto i = 0; i < uniforms; ++i)
+		{
+			glGetActiveUniform(value->id, i, length, &name_length, &size, &type, &buffer[0]);
+			std::string name(&buffer[0]);
+			auto uniform_location = glGetUniformLocation(value->id, name.c_str());
+			if (uniform_location != -1)
+				value->uniforms[name] = Uniform(uniform_location, type, size);
+		}
+
 		instance->programs[name] = value;
 		return value;
 	}

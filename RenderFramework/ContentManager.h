@@ -2,7 +2,6 @@
 
 #include "stdafx.h"
 
-#include "Shader.h"
 #include "Program.h"
 
 namespace RenderFramework
