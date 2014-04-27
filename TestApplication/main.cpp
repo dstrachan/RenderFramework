@@ -19,11 +19,7 @@ void loadContent()
 	auto fragmentShader = RenderFramework::ContentManager::loadShader(
 		"basic_frag", "Shaders/basic.frag", GL_FRAGMENT_SHADER);
 	auto program = RenderFramework::ContentManager::createProgram("basic", { "basic_vert", "basic_frag" });
-	RenderFramework::OpenGLRenderer::useProgram(program);
-
-	/*GLuint vao;
-	glGenVertexArrays(1, &vao);
-	glBindVertexArray(vao);*/
+	RenderFramework::Renderer::useProgram(program);
 
 	GLint posAttrib = glGetAttribLocation(program->id, "position");
 	glVertexAttribPointer(posAttrib, 2, GL_FLOAT, GL_FALSE, 0, 0);
@@ -40,22 +36,22 @@ void render()
 
 int main()
 {
-	if (!RenderFramework::OpenGLRenderer::initialise())
+	if (!RenderFramework::Renderer::initialise())
 		exit(EXIT_FAILURE);
-	RenderFramework::OpenGLRenderer::setSize(800, 600);
+	RenderFramework::Renderer::setTitle("Test Application");
 
 	loadContent();
 
-	while (RenderFramework::OpenGLRenderer::isRunning())
+	while (RenderFramework::Renderer::isRunning())
 	{
-		RenderFramework::OpenGLRenderer::beginRender();
+		RenderFramework::Renderer::beginRender();
 
 		render();
 
-		RenderFramework::OpenGLRenderer::endRender();
+		RenderFramework::Renderer::endRender();
 	}
 
-	RenderFramework::OpenGLRenderer::shutdown();
+	RenderFramework::Renderer::shutdown();
 
 	exit(EXIT_SUCCESS);
 }

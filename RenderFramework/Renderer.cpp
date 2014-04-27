@@ -1,22 +1,22 @@
 #include "stdafx.h"
 
-#include "OpenGLRenderer.h"
+#include "Renderer.h"
 
 namespace RenderFramework
 {
-	OpenGLRenderer* OpenGLRenderer::instance = new OpenGLRenderer();
+	Renderer* Renderer::instance = new Renderer();
 
-	OpenGLRenderer::OpenGLRenderer()
+	Renderer::Renderer()
 		: title("Render Framework"), width(640), height(480)
 	{
 	}
 
-	OpenGLRenderer::~OpenGLRenderer()
+	Renderer::~Renderer()
 	{
 		shutdown();
 	}
 
-	bool OpenGLRenderer::initialise()
+	bool Renderer::initialise()
 	{
 		// Initialise GLFW
 		if (!glfwInit())
@@ -70,7 +70,7 @@ namespace RenderFramework
 		return true;
 	}
 
-	bool OpenGLRenderer::beginRender()
+	bool Renderer::beginRender()
 	{
 		if (!instance->running)
 		{
@@ -94,7 +94,7 @@ namespace RenderFramework
 		return true;
 	}
 
-	bool OpenGLRenderer::endRender()
+	bool Renderer::endRender()
 	{
 		if (!instance->running)
 		{
@@ -111,12 +111,12 @@ namespace RenderFramework
 		return true;
 	}
 
-	void OpenGLRenderer::shutdown()
+	void Renderer::shutdown()
 	{
 		glfwTerminate();
 	}
 
-	bool OpenGLRenderer::useProgram(std::shared_ptr<Program> value)
+	bool Renderer::useProgram(std::shared_ptr<Program> value)
 	{
 		// Check for valid Program
 		if (value == nullptr)
@@ -136,43 +136,43 @@ namespace RenderFramework
 	GETTERS AND SETTERS
 	*/
 
-	GLFWwindow* OpenGLRenderer::getWindow()
+	GLFWwindow* Renderer::getWindow()
 	{
 		return instance->window;
 	}
 
-	std::string OpenGLRenderer::getTitle()
+	std::string Renderer::getTitle()
 	{
 		return instance->title;
 	}
 
-	void OpenGLRenderer::setTitle(const std::string& value)
+	void Renderer::setTitle(const std::string& value)
 	{
 		instance->title = value;
 		glfwSetWindowTitle(instance->window, instance->title.c_str());
 	}
 
-	bool OpenGLRenderer::isRunning()
+	bool Renderer::isRunning()
 	{
 		return instance->running;
 	}
 
-	void OpenGLRenderer::setRunning(bool value)
+	void Renderer::setRunning(bool value)
 	{
 		instance->running = value;
 	}
 
-	unsigned int OpenGLRenderer::getWidth()
+	unsigned int Renderer::getWidth()
 	{
 		return instance->width;
 	}
 
-	unsigned int OpenGLRenderer::getHeight()
+	unsigned int Renderer::getHeight()
 	{
 		return instance->height;
 	}
 
-	void OpenGLRenderer::setSize(unsigned int width, unsigned int height)
+	void Renderer::setSize(unsigned int width, unsigned int height)
 	{
 		instance->width = width;
 		instance->height = height;

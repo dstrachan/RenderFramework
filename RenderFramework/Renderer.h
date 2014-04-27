@@ -6,10 +6,10 @@
 
 namespace RenderFramework
 {
-	class OpenGLRenderer
+	class Renderer
 	{
 	private:
-		// Window used by the OpenGLRenderer
+		// Window used by the Renderer
 		GLFWwindow* window;
 		// Window title
 		std::string title;
@@ -22,16 +22,16 @@ namespace RenderFramework
 		// The height of the window used by the OpenGLRenderer
 		unsigned int height;
 		// Singleton instance
-		static OpenGLRenderer* instance;
+		static Renderer* instance;
 
 		// Private default constructor
-		OpenGLRenderer();
+		Renderer();
 		// Private copy constructor
-		OpenGLRenderer(const OpenGLRenderer&) { }
+		Renderer(const Renderer&) { }
 		// Private assignment operator
-		void operator=(OpenGLRenderer&) { }
+		void operator=(Renderer&) { }
 	public:
-		~OpenGLRenderer();
+		~Renderer();
 
 		// Initialises the OpenGLRenderer and creates a window
 		static bool initialise();
