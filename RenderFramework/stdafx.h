@@ -15,9 +15,11 @@
 // TODO: reference additional headers your program requires here
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
+#include <glm\glm.hpp>
 
 #include <memory>
 #include <iostream>
 #include <unordered_map>
 #include <fstream>
 #include <sstream>
+#include <array>

@@ -1,10 +1,8 @@
-#version 150
-
-uniform vec3 triangle_colour;
+#version 330
 
 out vec4 colour;
 
 void main()
 {
-	colour = vec4(triangle_colour, 1.0);
+	colour = vec4(1.0, 0.0, 0.0, 1.0);
 }
