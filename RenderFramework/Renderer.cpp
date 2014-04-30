@@ -75,7 +75,7 @@ namespace RenderFramework
 		if (!instance->running)
 		{
 #if defined(_DEBUG)
-			std::cerr << "ERROR - OpenGLRenderer is not running" << std::endl;
+			std::cerr << "ERROR - Renderer is not running" << std::endl;
 #endif
 			return false;
 		}
@@ -99,7 +99,7 @@ namespace RenderFramework
 		if (!instance->running)
 		{
 #if defined(_DEBUG)
-			std::cerr << "ERROR - OpenGLRenderer is not running" << std::endl;
+			std::cerr << "ERROR - Renderer is not running" << std::endl;
 #endif
 			return false;
 		}
@@ -132,8 +132,9 @@ namespace RenderFramework
 			glUniformMatrix3fv(found->second.location, 1, GL_FALSE, glm::value_ptr(normal));
 	}
 
-	bool Renderer::render(CubeGeometry* geometry, const glm::mat4& model,
-		const glm::mat4& view, const glm::mat4& projection)
+	bool Renderer::render(CubeGeometry* geometry, const Material* material,
+		const glm::mat4& model, const glm::mat4& view,
+		const glm::mat4& projection)
 	{
 		// Check if nullptr
 		if (geometry == nullptr)
@@ -165,6 +166,23 @@ namespace RenderFramework
 		// Set MVP values
 		auto normal = glm::mat3(glm::inverse(glm::transpose(model)));
 		instance->setMVP(model, view, projection, normal);
+
+		// Set material uniforms
+		auto found = material->getProgram()->uniforms.find("emissive");
+		if (found != material->getProgram()->uniforms.end())
+			glUniform4fv(found->second.location, 1, glm::value_ptr(material->getEmissive()));
+		found = material->getProgram()->uniforms.find("ambient");
+		if (found != material->getProgram()->uniforms.end())
+			glUniform4fv(found->second.location, 1, glm::value_ptr(material->getAmbient()));
+		found = material->getProgram()->uniforms.find("diffuse");
+		if (found != material->getProgram()->uniforms.end())
+			glUniform4fv(found->second.location, 1, glm::value_ptr(material->getDiffuse()));
+		found = material->getProgram()->uniforms.find("specular");
+		if (found != material->getProgram()->uniforms.end())
+			glUniform4fv(found->second.location, 1, glm::value_ptr(material->getSpecular()));
+		found = material->getProgram()->uniforms.find("shininess");
+		if (found != material->getProgram()->uniforms.end())
+			glUniform1f(found->second.location, material->getShininess());
 
 		// Render Geometry
 		glBindVertexArray(geometry->getVAO());

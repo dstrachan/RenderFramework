@@ -19,6 +19,9 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{78ed08a4-c8ef-492e-8276-9658275e6c20}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Material">
+      <UniqueIdentifier>{58bb9640-ff6d-4ba0-86ef-6af333032f26}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -36,15 +39,6 @@
     <ClInclude Include="ContentManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Program.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Uniform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -53,6 +47,21 @@
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Program.h">
+      <Filter>Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Uniform.h">
+      <Filter>Material</Filter>
+    </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Material</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -76,6 +85,9 @@
     </ClCompile>
     <ClCompile Include="Camera.cpp">
       <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Material</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

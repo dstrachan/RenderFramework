@@ -2,16 +2,14 @@
 
 RenderFramework::CubeGeometry* cube;
 RenderFramework::TargetCamera* camera;
+RenderFramework::Material* material;
 
-float cam_speed = 1.0f;
-float cam_yaw_speed = 10.0f;
-float cam_pos [] = { 0.0f, 0.0f, 2.0f };
-float cam_yaw = 0.0f;
 GLuint id;
 
 void loadContent()
 {
 	cube = new RenderFramework::CubeGeometry();
+	material = new RenderFramework::Material();
 
 	auto vertexShader = RenderFramework::ContentManager::loadShader(
 		"basic_vert", "Shaders/basic.vert", GL_VERTEX_SHADER);
@@ -19,6 +17,7 @@ void loadContent()
 		"basic_frag", "Shaders/basic.frag", GL_FRAGMENT_SHADER);
 	auto program = RenderFramework::ContentManager::createProgram("basic", { "basic_vert", "basic_frag" });
 	RenderFramework::Renderer::useProgram(program);
+	material->setProgram(program);
 
 	id = program->id;
 
@@ -40,7 +39,7 @@ void render(float deltaTime)
 	auto model = glm::mat4(1.0f);
 	auto view = camera->getView();
 	auto projection = camera->getProjection();
-	RenderFramework::Renderer::render(cube, model, view, projection);
+	RenderFramework::Renderer::render(cube, material, model, view, projection);
 }
 
 int main()
