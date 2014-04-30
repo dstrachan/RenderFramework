@@ -4,6 +4,21 @@
 
 namespace RenderFramework
 {
+	Geometry::Geometry()
+		: type(GL_TRIANGLES), vao(0), pos_buffer(0), norm_buffer(0)
+	{
+	}
+
+	Geometry::~Geometry()
+	{
+		if (pos_buffer)
+			glDeleteBuffers(1, &pos_buffer);
+		if (norm_buffer)
+			glDeleteBuffers(1, &norm_buffer);
+		if (vao)
+			glDeleteVertexArrays(1, &vao);
+	}
+
 	bool Geometry::initialise_geometry(Geometry* geometry)
 	{
 		// Check if nullptr
@@ -49,5 +64,20 @@ namespace RenderFramework
 		}
 
 		return true;
+	}
+
+	GLsizei Geometry::getCount() const
+	{
+		return positions.size();
+	}
+
+	GLenum Geometry::getType() const
+	{
+		return type;
+	}
+
+	GLuint Geometry::getVAO() const
+	{
+		return vao;
 	}
 }

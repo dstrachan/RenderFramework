@@ -16,19 +16,8 @@ namespace RenderFramework
 		// Normal data buffer ID
 		GLuint norm_buffer;
 
-		Geometry()
-			: type(GL_TRIANGLES), vao(0), pos_buffer(0), norm_buffer(0)
-		{
-		}
-		~Geometry()
-		{
-			if (pos_buffer)
-				glDeleteBuffers(1, &pos_buffer);
-			if (norm_buffer)
-				glDeleteBuffers(1, &norm_buffer);
-			if (vao)
-				glDeleteVertexArrays(1, &vao);
-		}
+		Geometry();
+		~Geometry();
 
 		static bool initialise_geometry(Geometry* geometry);
 		virtual void init() = 0;
@@ -38,9 +27,9 @@ namespace RenderFramework
 		// Vector containing normal data
 		std::vector<glm::vec3> normals;
 
-		GLenum getType() { return type; }
-		GLsizei getCount() { return positions.size(); }
-		GLuint getVAO() { return vao; }
+		GLsizei getCount() const;
+		GLenum getType() const;
+		GLuint getVAO() const;
 	};
 
 	class CubeGeometry : public Geometry

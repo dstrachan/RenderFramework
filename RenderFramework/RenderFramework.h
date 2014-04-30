@@ -4,3 +4,4 @@
 #include "ContentManager.h"
 #include "Shader.h"
 #include "Geometry.h"
+#include "Camera.h"

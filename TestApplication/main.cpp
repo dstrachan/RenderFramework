@@ -1,17 +1,13 @@
 #include <RenderFramework.h>
 
-/*
-
-Scene* scene = new Scene();
-Camera* camera = new PerspectiveCmaera(75.0f, width / height, 0.1f, 1000.0f);
-
-Geometry* geometry = new CubeGeometry(1.0f, 1.0f, 1.0f);
-Material* material = new BasicMaterial({ colour: 0x00ff00 });
-Mesh* cube = new Mesh(geometry, material);
-scene.add(cube);
-
-*/
 RenderFramework::CubeGeometry* cube;
+RenderFramework::TargetCamera* camera;
+
+float cam_speed = 1.0f;
+float cam_yaw_speed = 10.0f;
+float cam_pos [] = { 0.0f, 0.0f, 2.0f };
+float cam_yaw = 0.0f;
+GLuint id;
 
 void loadContent()
 {
@@ -23,12 +19,31 @@ void loadContent()
 		"basic_frag", "Shaders/basic.frag", GL_FRAGMENT_SHADER);
 	auto program = RenderFramework::ContentManager::createProgram("basic", { "basic_vert", "basic_frag" });
 	RenderFramework::Renderer::useProgram(program);
+
+	id = program->id;
+
+	camera = new RenderFramework::TargetCamera();
+	camera->setProjection(glm::quarter_pi<float>(),
+		(float) RenderFramework::Renderer::getWidth() /
+		(float) RenderFramework::Renderer::getHeight(),
+		2.414f, 10000.0f);
+
+	auto proj_mat_location = glGetUniformLocation(id, "proj");
+	glUniformMatrix4fv(proj_mat_location, 1, GL_FALSE, glm::value_ptr(camera->getProjection()));
 }
 
-void render()
+void render(float deltaTime)
 {
+	auto position = camera->getPosition();
+	if (glfwGetKey(RenderFramework::Renderer::getWindow(), GLFW_KEY_LEFT))
+		position.x -= deltaTime / 100.0f;
+	camera->setPosition(position);
+	camera->update(deltaTime);
+
+	auto view_mat_location = glGetUniformLocation(id, "view");
+	glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, glm::value_ptr(camera->getView()));
+
 	RenderFramework::Renderer::render(cube);
-	// RenderFramework::Renderer::render(scene, camera);
 }
 
 int main()
@@ -39,13 +54,21 @@ int main()
 
 	loadContent();
 
+	auto currTime = std::chrono::system_clock::now();
+	auto prevTime = std::chrono::system_clock::now();
+
 	while (RenderFramework::Renderer::isRunning())
 	{
+		currTime = std::chrono::system_clock::now();
+		auto deltaTime = std::chrono::duration_cast<std::chrono::milliseconds>(currTime - prevTime).count();
+
 		RenderFramework::Renderer::beginRender();
 
-		render();
+		render(deltaTime);
 
 		RenderFramework::Renderer::endRender();
+
+		prevTime = currTime;
 	}
 
 	RenderFramework::Renderer::shutdown();
