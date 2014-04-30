@@ -30,7 +30,7 @@ namespace RenderFramework
 			// Copy vertex data to the buffer object
 			glBufferData(GL_ARRAY_BUFFER, geometry->positions.size() * sizeof(glm::vec3), &geometry->positions[0], GL_STATIC_DRAW);
 			// Enable attribute pointer for position data
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 			glEnableVertexAttribArray(0);
 		}
 
@@ -44,7 +44,7 @@ namespace RenderFramework
 			// Copy normal data to the buffer object
 			glBufferData(GL_ARRAY_BUFFER, geometry->normals.size() * sizeof(glm::vec3), &geometry->normals[0], GL_STATIC_DRAW);
 			// Enable attribute pointer for normal data
-			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, 0);
+			glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
 			glEnableVertexAttribArray(1);
 		}
 

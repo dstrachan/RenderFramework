@@ -40,6 +40,7 @@ namespace RenderFramework
 
 		GLenum getType() { return type; }
 		GLsizei getCount() { return positions.size(); }
+		GLuint getVAO() { return vao; }
 	};
 
 	class CubeGeometry : public Geometry

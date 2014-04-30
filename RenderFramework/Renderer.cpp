@@ -113,6 +113,7 @@ namespace RenderFramework
 
 	void Renderer::render(CubeGeometry* geometry)
 	{
+		glBindVertexArray(geometry->getVAO());
 		glDrawArrays(geometry->getType(), 0, geometry->getCount());
 	}
 
