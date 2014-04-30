@@ -9,13 +9,15 @@ namespace RenderFramework
 	protected:
 		// Geometry type
 		GLenum type;
+		// Vertex array object ID
+		GLuint vao;
 		// Position data buffer ID
 		GLuint pos_buffer;
 		// Normal data buffer ID
 		GLuint norm_buffer;
 
 		Geometry()
-			: type(GL_TRIANGLES), pos_buffer(0), norm_buffer(0)
+			: type(GL_TRIANGLES), vao(0), pos_buffer(0), norm_buffer(0)
 		{
 		}
 		~Geometry()
@@ -24,6 +26,8 @@ namespace RenderFramework
 				glDeleteBuffers(1, &pos_buffer);
 			if (norm_buffer)
 				glDeleteBuffers(1, &norm_buffer);
+			if (vao)
+				glDeleteVertexArrays(1, &vao);
 		}
 
 		static bool initialise_geometry(Geometry* geometry);

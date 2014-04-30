@@ -14,6 +14,11 @@ namespace RenderFramework
 #endif
 			return false;
 		}
+
+		// Generate a new vertex array object
+		glGenVertexArrays(1, &geometry->vao);
+		// Bind the vertex array object
+		glBindVertexArray(geometry->vao);
 		
 		// If we have position data then create buffer
 		if (geometry->positions.size() > 0)
