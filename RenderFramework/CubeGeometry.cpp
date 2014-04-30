@@ -31,17 +31,32 @@ namespace RenderFramework
 			glm::vec3(0.5f, -0.5f, 0.5f), glm::vec3(-0.5f, -0.5f, 0.5f),
 			glm::vec3(-0.5f, -0.5f, -0.5f), glm::vec3(0.5f, -0.5f, -0.5f)
 		};
+		std::array<glm::vec3, 6> cube_normals = {
+			glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(1.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(-1.0f, 0.0f, 0.0f),
+			glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)
+		};
 
-		for (auto& v : cube_positions)
-			positions.push_back(v);
+		for (auto i = 0; i < 24; ++i)
+		{
+			positions.push_back(cube_positions[i]);
+			normals.push_back(cube_normals[i / 4]);
+		}
 
-		// Generate a new buffer object
-		glGenBuffers(1, &vbo);
-		// Bind the buffer object
-		glBindBuffer(GL_ARRAY_BUFFER, vbo);
-		// Copy vertex data to the buffer object
-		glBufferData(GL_ARRAY_BUFFER, positions.size() * sizeof(glm::vec3), &positions[0], GL_STATIC_DRAW);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		glEnableVertexAttribArray(0);
+		// Set geometry type
+		type = GL_QUADS;
+
+		// Try to initialise geometry
+		if (!initialise_geometry(this))
+		{
+#if defined(_DEBUG)
+			std::cerr << "ERROR - Could not initialise CubeGeometry" << std::endl;
+#endif
+			return;
+		}
+
+#if defined(_DEBUG)
+		std::clog << "LOG - CubeGeometry created" << std::endl;
+#endif
 	}
 }

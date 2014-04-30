@@ -3,6 +3,7 @@
 #include "stdafx.h"
 
 #include "Program.h"
+#include "Geometry.h"
 
 namespace RenderFramework
 {
@@ -41,6 +42,8 @@ namespace RenderFramework
 		static bool endRender();
 		// Shutsdown the OpenGLRenderer
 		static void shutdown();
+		// Renders a piece of geometry
+		static void render(CubeGeometry* geometry);
 
 		// Uses a Program
 		static bool useProgram(std::shared_ptr<Program> value);

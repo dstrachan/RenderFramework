@@ -111,6 +111,11 @@ namespace RenderFramework
 		return true;
 	}
 
+	void Renderer::render(CubeGeometry* geometry)
+	{
+		glDrawArrays(geometry->getType(), 0, geometry->getCount());
+	}
+
 	void Renderer::shutdown()
 	{
 		glfwTerminate();

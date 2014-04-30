@@ -1,8 +1,21 @@
 #include <RenderFramework.h>
 
+/*
+
+Scene* scene = new Scene();
+Camera* camera = new PerspectiveCmaera(75.0f, width / height, 0.1f, 1000.0f);
+
+Geometry* geometry = new CubeGeometry(1.0f, 1.0f, 1.0f);
+Material* material = new BasicMaterial({ colour: 0x00ff00 });
+Mesh* cube = new Mesh(geometry, material);
+scene.add(cube);
+
+*/
+RenderFramework::CubeGeometry* cube;
+
 void loadContent()
 {
-	RenderFramework::CubeGeometry* cube = new RenderFramework::CubeGeometry();
+	cube = new RenderFramework::CubeGeometry();
 
 	auto vertexShader = RenderFramework::ContentManager::loadShader(
 		"basic_vert", "Shaders/basic.vert", GL_VERTEX_SHADER);
@@ -14,7 +27,8 @@ void loadContent()
 
 void render()
 {
-	glDrawArrays(GL_QUADS, 0, 24);
+	RenderFramework::Renderer::render(cube);
+	// RenderFramework::Renderer::render(scene, camera);
 }
 
 int main()

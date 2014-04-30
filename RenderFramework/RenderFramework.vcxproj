@@ -89,6 +89,7 @@
   <ItemGroup>
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="CubeGeometry.cpp" />
+    <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
