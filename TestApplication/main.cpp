@@ -1,15 +1,19 @@
 #include <RenderFramework.h>
 
-RenderFramework::CubeGeometry* cube;
+std::shared_ptr<RenderFramework::CubeGeometry> geometry;
+std::shared_ptr<RenderFramework::Material> material;
+std::shared_ptr<RenderFramework::Mesh> mesh;
 RenderFramework::TargetCamera* camera;
-RenderFramework::Material* material;
 
 GLuint id;
 
 void loadContent()
 {
-	cube = new RenderFramework::CubeGeometry();
-	material = new RenderFramework::Material();
+	geometry = std::make_shared<RenderFramework::CubeGeometry>();
+	material = std::make_shared<RenderFramework::Material>();
+	mesh = std::make_shared<RenderFramework::Mesh>();
+	mesh->setGeometry(geometry);
+	mesh->setMaterial(material);
 
 	auto vertexShader = RenderFramework::ContentManager::loadShader(
 		"basic_vert", "Shaders/basic.vert", GL_VERTEX_SHADER);
@@ -39,7 +43,7 @@ void render(float deltaTime)
 	auto model = glm::mat4(1.0f);
 	auto view = camera->getView();
 	auto projection = camera->getProjection();
-	RenderFramework::Renderer::render(cube, material, model, view, projection);
+	RenderFramework::Renderer::render(mesh, model, view, projection);
 }
 
 int main()

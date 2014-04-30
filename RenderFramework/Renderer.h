@@ -2,9 +2,7 @@
 
 #include "stdafx.h"
 
-#include "Program.h"
-#include "Geometry.h"
-#include "Material.h"
+#include "Mesh.h"
 
 namespace RenderFramework
 {
@@ -47,8 +45,7 @@ namespace RenderFramework
 		// Shutsdown the OpenGLRenderer
 		static void shutdown();
 		// Renders a piece of geometry
-		static bool render(CubeGeometry* geometry, const Material* material,
-			const glm::mat4& model, const glm::mat4& view,
+		static bool render(std::shared_ptr<Mesh> mesh, const glm::mat4& model, const glm::mat4& view,
 			const glm::mat4& projection);
 
 		// Uses a Program

@@ -89,5 +89,8 @@
     <ClCompile Include="Material.cpp">
       <Filter>Material</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Material</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

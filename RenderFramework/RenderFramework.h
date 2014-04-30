@@ -6,3 +6,4 @@
 #include "Geometry.h"
 #include "Camera.h"
 #include "Material.h"
+#include "Mesh.h"

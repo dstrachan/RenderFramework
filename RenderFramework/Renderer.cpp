@@ -132,12 +132,12 @@ namespace RenderFramework
 			glUniformMatrix3fv(found->second.location, 1, GL_FALSE, glm::value_ptr(normal));
 	}
 
-	bool Renderer::render(CubeGeometry* geometry, const Material* material,
+	bool Renderer::render(std::shared_ptr<Mesh> mesh,
 		const glm::mat4& model, const glm::mat4& view,
 		const glm::mat4& projection)
 	{
 		// Check if nullptr
-		if (geometry == nullptr)
+		if (mesh->getGeometry() == nullptr)
 		{
 #if defined(_DEBUG)
 			std::cerr << "ERROR - Cannot render nullptr" << std::endl;
@@ -168,25 +168,25 @@ namespace RenderFramework
 		instance->setMVP(model, view, projection, normal);
 
 		// Set material uniforms
-		auto found = material->getProgram()->uniforms.find("emissive");
-		if (found != material->getProgram()->uniforms.end())
-			glUniform4fv(found->second.location, 1, glm::value_ptr(material->getEmissive()));
-		found = material->getProgram()->uniforms.find("ambient");
-		if (found != material->getProgram()->uniforms.end())
-			glUniform4fv(found->second.location, 1, glm::value_ptr(material->getAmbient()));
-		found = material->getProgram()->uniforms.find("diffuse");
-		if (found != material->getProgram()->uniforms.end())
-			glUniform4fv(found->second.location, 1, glm::value_ptr(material->getDiffuse()));
-		found = material->getProgram()->uniforms.find("specular");
-		if (found != material->getProgram()->uniforms.end())
-			glUniform4fv(found->second.location, 1, glm::value_ptr(material->getSpecular()));
-		found = material->getProgram()->uniforms.find("shininess");
-		if (found != material->getProgram()->uniforms.end())
-			glUniform1f(found->second.location, material->getShininess());
+		auto found = mesh->getMaterial()->getProgram()->uniforms.find("emissive");
+		if (found != mesh->getMaterial()->getProgram()->uniforms.end())
+			glUniform4fv(found->second.location, 1, glm::value_ptr(mesh->getMaterial()->getEmissive()));
+		found = mesh->getMaterial()->getProgram()->uniforms.find("ambient");
+		if (found != mesh->getMaterial()->getProgram()->uniforms.end())
+			glUniform4fv(found->second.location, 1, glm::value_ptr(mesh->getMaterial()->getAmbient()));
+		found = mesh->getMaterial()->getProgram()->uniforms.find("diffuse");
+		if (found != mesh->getMaterial()->getProgram()->uniforms.end())
+			glUniform4fv(found->second.location, 1, glm::value_ptr(mesh->getMaterial()->getDiffuse()));
+		found = mesh->getMaterial()->getProgram()->uniforms.find("specular");
+		if (found != mesh->getMaterial()->getProgram()->uniforms.end())
+			glUniform4fv(found->second.location, 1, glm::value_ptr(mesh->getMaterial()->getSpecular()));
+		found = mesh->getMaterial()->getProgram()->uniforms.find("shininess");
+		if (found != mesh->getMaterial()->getProgram()->uniforms.end())
+			glUniform1f(found->second.location, mesh->getMaterial()->getShininess());
 
 		// Render Geometry
-		glBindVertexArray(geometry->getVAO());
-		glDrawArrays(geometry->getType(), 0, geometry->getCount());
+		glBindVertexArray(mesh->getGeometry()->getVAO());
+		glDrawArrays(mesh->getGeometry()->getType(), 0, mesh->getGeometry()->getCount());
 
 		return true;
 	}
