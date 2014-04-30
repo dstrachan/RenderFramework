@@ -31,6 +31,9 @@ namespace RenderFramework
 		Renderer(const Renderer&) { }
 		// Private assignment operator
 		void operator=(Renderer&) { }
+
+		void setMVP(const glm::mat4& model, const glm::mat4& view,
+			const glm::mat4& projection, const glm::mat3& normal);
 	public:
 		~Renderer();
 
@@ -43,7 +46,8 @@ namespace RenderFramework
 		// Shutsdown the OpenGLRenderer
 		static void shutdown();
 		// Renders a piece of geometry
-		static void render(CubeGeometry* geometry);
+		static bool render(CubeGeometry* geometry, const glm::mat4& model,
+			const glm::mat4& view, const glm::mat4& projection);
 
 		// Uses a Program
 		static bool useProgram(std::shared_ptr<Program> value);

@@ -111,10 +111,66 @@ namespace RenderFramework
 		return true;
 	}
 
-	void Renderer::render(CubeGeometry* geometry)
+	void Renderer::setMVP(const glm::mat4& model, const glm::mat4& view,
+		const glm::mat4& projection, const glm::mat3& normal)
 	{
+		// Set the model matrix
+		auto found = instance->program->uniforms.find("M");
+		if (found != instance->program->uniforms.end())
+			glUniformMatrix4fv(found->second.location, 1, GL_FALSE, glm::value_ptr(model));
+		// Set the view matrix
+		found = instance->program->uniforms.find("V");
+		if (found != instance->program->uniforms.end())
+			glUniformMatrix4fv(found->second.location, 1, GL_FALSE, glm::value_ptr(view));
+		// Set the projection matrix
+		found = instance->program->uniforms.find("P");
+		if (found != instance->program->uniforms.end())
+			glUniformMatrix4fv(found->second.location, 1, GL_FALSE, glm::value_ptr(projection));
+		// Set the normal matrix
+		found = instance->program->uniforms.find("N");
+		if (found != instance->program->uniforms.end())
+			glUniformMatrix3fv(found->second.location, 1, GL_FALSE, glm::value_ptr(normal));
+	}
+
+	bool Renderer::render(CubeGeometry* geometry, const glm::mat4& model,
+		const glm::mat4& view, const glm::mat4& projection)
+	{
+		// Check if nullptr
+		if (geometry == nullptr)
+		{
+#if defined(_DEBUG)
+			std::cerr << "ERROR - Cannot render nullptr" << std::endl;
+#endif
+			return false;
+		}
+
+		// Check if running
+		if (!instance->running)
+		{
+#if defined(_DEBUG)
+			std::cerr << "ERROR - Renderer is not running" << std::endl;
+#endif
+			return false;
+		}
+
+		// Check if Program is bound
+		if (instance->program == nullptr)
+		{
+#if defined(_DEBUG)
+			std::cerr << "ERROR - No program bound" << std::endl;
+#endif
+			return false;
+		}
+
+		// Set MVP values
+		auto normal = glm::mat3(glm::inverse(glm::transpose(model)));
+		instance->setMVP(model, view, projection, normal);
+
+		// Render Geometry
 		glBindVertexArray(geometry->getVAO());
 		glDrawArrays(geometry->getType(), 0, geometry->getCount());
+
+		return true;
 	}
 
 	void Renderer::shutdown()

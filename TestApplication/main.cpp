@@ -27,9 +27,6 @@ void loadContent()
 		(float) RenderFramework::Renderer::getWidth() /
 		(float) RenderFramework::Renderer::getHeight(),
 		2.414f, 10000.0f);
-
-	auto proj_mat_location = glGetUniformLocation(id, "proj");
-	glUniformMatrix4fv(proj_mat_location, 1, GL_FALSE, glm::value_ptr(camera->getProjection()));
 }
 
 void render(float deltaTime)
@@ -40,10 +37,10 @@ void render(float deltaTime)
 	camera->setPosition(position);
 	camera->update(deltaTime);
 
-	auto view_mat_location = glGetUniformLocation(id, "view");
-	glUniformMatrix4fv(view_mat_location, 1, GL_FALSE, glm::value_ptr(camera->getView()));
-
-	RenderFramework::Renderer::render(cube);
+	auto model = glm::mat4(1.0f);
+	auto view = camera->getView();
+	auto projection = camera->getProjection();
+	RenderFramework::Renderer::render(cube, model, view, projection);
 }
 
 int main()
