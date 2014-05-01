@@ -1,9 +1,6 @@
 #include <RenderFramework.h>
 
-std::shared_ptr<RenderFramework::CubeGeometry> geometry;
-std::shared_ptr<RenderFramework::Material> material;
-std::shared_ptr<RenderFramework::Transform> transform;
-std::shared_ptr<RenderFramework::Mesh> mesh;
+std::shared_ptr<RenderFramework::Scene> scene;
 std::shared_ptr<RenderFramework::TargetCamera> camera;
 
 void loadContent()
@@ -15,17 +12,20 @@ void loadContent()
 	auto program = RenderFramework::ContentManager::createProgram("basic",
 		{ "basic_vert", "basic_frag" });
 
-	geometry = std::make_shared<RenderFramework::CubeGeometry>();
+	auto geometry = std::make_shared<RenderFramework::CubeGeometry>();
 
-	material = std::make_shared<RenderFramework::Material>();
+	auto material = std::make_shared<RenderFramework::Material>();
 	material->setProgram(program);
 
-	transform = std::make_shared<RenderFramework::Transform>();
+	auto transform = std::make_shared<RenderFramework::Transform>();
 
-	mesh = std::make_shared<RenderFramework::Mesh>();
+	auto mesh = std::make_shared<RenderFramework::Mesh>();
 	mesh->setGeometry(geometry);
 	mesh->setMaterial(material);
 	mesh->setTransform(transform);
+
+	scene = std::make_shared<RenderFramework::Scene>();
+	scene->meshes.push_back(mesh);
 
 	camera = std::make_shared<RenderFramework::TargetCamera>();
 	camera->setProjection(glm::quarter_pi<float>(),
@@ -35,19 +35,10 @@ void loadContent()
 }
 
 void render(float deltaTime)
-{
-	if (glfwGetKey(RenderFramework::Renderer::getWindow(), GLFW_KEY_LEFT))
-		transform->rotate(glm::vec3(0.0f, -1.0f, 0.0f) * deltaTime * 0.1f);
-	else if (glfwGetKey(RenderFramework::Renderer::getWindow(), GLFW_KEY_RIGHT))
-		transform->rotate(glm::vec3(0.0f, 1.0f, 0.0f) * deltaTime * 0.1f);
-	if (glfwGetKey(RenderFramework::Renderer::getWindow(), GLFW_KEY_UP))
-		transform->rotate(glm::vec3(1.0f, 0.0f, 0.0f) * deltaTime * 0.1f);
-	else if (glfwGetKey(RenderFramework::Renderer::getWindow(), GLFW_KEY_DOWN))
-		transform->rotate(glm::vec3(-1.0f, 0.0f, 0.0f) * deltaTime * 0.1f);
-	
+{	
 	camera->update(deltaTime);
 
-	RenderFramework::Renderer::render(mesh, camera);
+	RenderFramework::Renderer::render(scene, camera);
 }
 
 int main()

@@ -8,3 +8,4 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "Transform.h"
+#include "Scene.h"
