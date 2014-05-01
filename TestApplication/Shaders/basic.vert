@@ -1,6 +1,7 @@
-#version 330
+#version 410
 
 layout (location = 0) in vec3 position;
+layout (location = 1) in vec3 normal;
 
 uniform mat4 M;
 uniform mat4 V;
@@ -13,11 +14,14 @@ uniform vec4 diffuse;
 uniform vec4 specular;
 uniform float shininess;
 
+vec3 eye_dir;
+vec3 light_dir;
+
 layout (location = 0) out vec4 colour;
 
 void main()
 {
 	mat4 MVP = P * V * M;
 	gl_Position = MVP * vec4(position, 1.0);
-	colour = diffuse;
+	colour = MVP * vec4(position, 1.0);
 }

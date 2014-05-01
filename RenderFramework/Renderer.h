@@ -3,6 +3,7 @@
 #include "stdafx.h"
 
 #include "Mesh.h"
+#include "Camera.h"
 
 namespace RenderFramework
 {
@@ -45,8 +46,7 @@ namespace RenderFramework
 		// Shutsdown the OpenGLRenderer
 		static void shutdown();
 		// Renders a piece of geometry
-		static bool render(std::shared_ptr<Mesh> mesh, const glm::mat4& model, const glm::mat4& view,
-			const glm::mat4& projection);
+		static bool render(std::shared_ptr<Mesh> mesh, std::shared_ptr<Camera> camera);
 
 		// Uses a Program
 		static bool useProgram(std::shared_ptr<Program> value);

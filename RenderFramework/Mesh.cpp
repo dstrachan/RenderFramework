@@ -12,6 +12,16 @@ namespace RenderFramework
 	{
 	}
 
+	std::shared_ptr<Transform> Mesh::getTransform() const
+	{
+		return transform;
+	}
+
+	void Mesh::setTransform(const std::shared_ptr<Transform>& value)
+	{
+		transform = value;
+	}
+
 	std::shared_ptr<Geometry> Mesh::getGeometry() const
 	{
 		return geometry;

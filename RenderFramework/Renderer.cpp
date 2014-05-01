@@ -132,9 +132,7 @@ namespace RenderFramework
 			glUniformMatrix3fv(found->second.location, 1, GL_FALSE, glm::value_ptr(normal));
 	}
 
-	bool Renderer::render(std::shared_ptr<Mesh> mesh,
-		const glm::mat4& model, const glm::mat4& view,
-		const glm::mat4& projection)
+	bool Renderer::render(std::shared_ptr<Mesh> mesh, std::shared_ptr<Camera> camera)
 	{
 		// Check if nullptr
 		if (mesh->getGeometry() == nullptr)
@@ -155,7 +153,7 @@ namespace RenderFramework
 		}
 
 		// Check if Program is bound
-		if (instance->program == nullptr)
+		if (!useProgram(mesh->getMaterial()->getProgram()))
 		{
 #if defined(_DEBUG)
 			std::cerr << "ERROR - No program bound" << std::endl;
@@ -164,6 +162,9 @@ namespace RenderFramework
 		}
 
 		// Set MVP values
+		auto model = mesh->getTransform()->getTransformMatrix();
+		auto view = camera->getView();
+		auto projection = camera->getProjection();
 		auto normal = glm::mat3(glm::inverse(glm::transpose(model)));
 		instance->setMVP(model, view, projection, normal);
 
