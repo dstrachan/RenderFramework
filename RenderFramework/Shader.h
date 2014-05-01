@@ -4,19 +4,14 @@
 
 namespace RenderFramework
 {
-	class Shader
+	struct Shader
 	{
-	public:
+		// OpenGL Shader ID
 		GLuint id;
+		// Shader type
 		GLenum type;
-		Shader() : id(0), type(GL_VERTEX_SHADER) { }
-		~Shader()
-		{
-			if (id)
-			{
-				glDeleteShader(id);
-				id = 0;
-			}
-		}
+
+		Shader();
+		~Shader();
 	};
 }

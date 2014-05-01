@@ -43,34 +43,4 @@ namespace RenderFramework
 	{
 		return glm::mat3_cast(orientation);
 	}
-
-	glm::vec3 Transform::getScale() const
-	{
-		return scale;
-	}
-
-	void Transform::setScale(const glm::vec3& value)
-	{
-		scale = value;
-	}
-
-	glm::quat Transform::getOrientation() const
-	{
-		return orientation;
-	}
-
-	void Transform::setOrientation(const glm::quat& value)
-	{
-		orientation = value;
-	}
-
-	glm::vec3 Transform::getPosition() const
-	{
-		return position;
-	}
-
-	void Transform::setPosition(const glm::vec3& value)
-	{
-		position = value;
-	}
 }

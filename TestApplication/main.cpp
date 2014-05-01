@@ -15,14 +15,14 @@ void loadContent()
 	auto geometry = std::make_shared<RenderFramework::CubeGeometry>();
 
 	auto material = std::make_shared<RenderFramework::Material>();
-	material->setProgram(program);
+	material->program = program;
 
 	auto transform = std::make_shared<RenderFramework::Transform>();
 
 	auto mesh = std::make_shared<RenderFramework::Mesh>();
-	mesh->setGeometry(geometry);
-	mesh->setMaterial(material);
-	mesh->setTransform(transform);
+	mesh->geometry = geometry;
+	mesh->material = material;
+	mesh->transform = transform;
 
 	scene = std::make_shared<RenderFramework::Scene>();
 	scene->meshes.push_back(mesh);

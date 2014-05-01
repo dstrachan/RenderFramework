@@ -11,34 +11,4 @@ namespace RenderFramework
 	Mesh::~Mesh()
 	{
 	}
-
-	std::shared_ptr<Transform> Mesh::getTransform() const
-	{
-		return transform;
-	}
-
-	void Mesh::setTransform(const std::shared_ptr<Transform>& value)
-	{
-		transform = value;
-	}
-
-	std::shared_ptr<Geometry> Mesh::getGeometry() const
-	{
-		return geometry;
-	}
-
-	void Mesh::setGeometry(const std::shared_ptr<Geometry>& value)
-	{
-		geometry = value;
-	}
-
-	std::shared_ptr<Material> Mesh::getMaterial() const
-	{
-		return material;
-	}
-
-	void Mesh::setMaterial(const std::shared_ptr<Material>& value)
-	{
-		material = value;
-	}
 }

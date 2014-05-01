@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Renderer.h"
 #include "ContentManager.h"
-#include "Shader.h"
-#include "Geometry.h"
+#include "Renderer.h"
+
 #include "Camera.h"
+#include "Geometry.h"
 #include "Material.h"
 #include "Mesh.h"
-#include "Transform.h"
 #include "Scene.h"
+#include "Transform.h"

@@ -17,9 +17,11 @@ namespace RenderFramework
 		GLuint norm_buffer;
 
 		Geometry();
-		~Geometry();
+		virtual ~Geometry();
 
+		// Initialises buffers for given Geometry
 		static bool initialise_geometry(Geometry* geometry);
+		// Initialises data for Geometry
 		virtual void init() = 0;
 	public:
 		// Vector containing position data
@@ -35,12 +37,9 @@ namespace RenderFramework
 	class CubeGeometry : public Geometry
 	{
 	private:
+		// Initialises data for CubeGeometry
 		void init();
 	public:
-		CubeGeometry()
-			: Geometry()
-		{
-			init();
-		}
+		CubeGeometry();
 	};
 }

@@ -7,15 +7,21 @@ namespace RenderFramework
 	class Camera
 	{
 	protected:
+		// Position of the Camera
 		glm::vec3 position;
+		// Target of the Camera
 		glm::vec3 target;
+		// Orientation of the Camera
 		glm::vec3 up;
+		// View matrix defined for the Camera
 		glm::mat4 view;
+		// Projection matrix defined for the Camera
 		glm::mat4 projection;
 
 		Camera();
-		~Camera();
+		virtual ~Camera();
 	public:
+		// Updates the Camera
 		virtual void update(float deltaTime) = 0;
 
 		glm::vec3 getPosition() const;
@@ -36,6 +42,7 @@ namespace RenderFramework
 		TargetCamera();
 		~TargetCamera();
 
+		// Updates the TargetCamera
 		void update(float deltaTime);
 	};
 }

@@ -8,6 +8,7 @@ namespace RenderFramework
 		: Camera()
 	{
 	}
+	
 
 	TargetCamera::~TargetCamera()
 	{

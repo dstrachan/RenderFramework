@@ -22,6 +22,15 @@
     <Filter Include="Material">
       <UniqueIdentifier>{58bb9640-ff6d-4ba0-86ef-6af333032f26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{e2e53752-b2e9-4d83-aab0-c0f7a5849a70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Transform">
+      <UniqueIdentifier>{81c51150-c773-460b-a49e-1380e97935dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{eeac51a8-60cb-45cd-820b-e189fb4704f8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -51,6 +60,9 @@
     <ClInclude Include="Material.h">
       <Filter>Material</Filter>
     </ClInclude>
+    <ClInclude Include="Mesh.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
     <ClInclude Include="Program.h">
       <Filter>Material</Filter>
     </ClInclude>
@@ -60,14 +72,11 @@
     <ClInclude Include="Uniform.h">
       <Filter>Material</Filter>
     </ClInclude>
-    <ClInclude Include="Mesh.h">
-      <Filter>Material</Filter>
-    </ClInclude>
     <ClInclude Include="Transform.h">
-      <Filter>Header Files</Filter>
+      <Filter>Transform</Filter>
     </ClInclude>
     <ClInclude Include="Scene.h">
-      <Filter>Header Files</Filter>
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -96,13 +105,22 @@
       <Filter>Material</Filter>
     </ClCompile>
     <ClCompile Include="Mesh.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="Program.cpp">
+      <Filter>Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Material</Filter>
+    </ClCompile>
+    <ClCompile Include="Uniform.cpp">
       <Filter>Material</Filter>
     </ClCompile>
     <ClCompile Include="Transform.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Transform</Filter>
     </ClCompile>
     <ClCompile Include="Scene.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

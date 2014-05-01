@@ -16,11 +16,11 @@ namespace RenderFramework
 		std::string title;
 		// Current Program
 		std::shared_ptr<Program> program;
-		// Flag indicating that the OpenGLRenderer is still running
+		// Flag indicating that the Renderer is still running
 		bool running;
-		// The width of the window used by the OpenGLRenderer
+		// The width of the window used by the Renderer
 		unsigned int width;
-		// The height of the window used by the OpenGLRenderer
+		// The height of the window used by the Renderer
 		unsigned int height;
 		// Singleton instance
 		static Renderer* instance;
@@ -37,13 +37,13 @@ namespace RenderFramework
 	public:
 		~Renderer();
 
-		// Initialises the OpenGLRenderer and creates a window
+		// Initialises the Renderer and creates a window
 		static bool initialise();
 		// Begins a render
 		static bool beginRender();
 		// Ends a render
 		static bool endRender();
-		// Shutsdown the OpenGLRenderer
+		// Shutsdown the Renderer
 		static void shutdown();
 		// Renders a piece of geometry
 		static bool render(std::shared_ptr<Scene> scene, std::shared_ptr<Camera> camera);
@@ -51,19 +51,15 @@ namespace RenderFramework
 		// Uses a Program
 		static bool useProgram(std::shared_ptr<Program> value);
 
-		/*
-		GETTERS AND SETTERS
-		*/
-
-		// Gets the window used by the OpenGLRenderer
+		// Gets the window used by the Renderer
 		static GLFWwindow* getWindow();
 		// Gets the window title
 		static std::string getTitle();
 		// Sets the window title
 		static void setTitle(const std::string& value);
-		// Returns the running state of the OpenGLRenderer
+		// Returns the running state of the Renderer
 		static bool isRunning();
-		// Sets the running state of the OpenGLRenderer
+		// Sets the running state of the Renderer
 		static void setRunning(bool value);
 		// Gets the window width
 		static unsigned int getWidth();

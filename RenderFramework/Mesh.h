@@ -8,21 +8,16 @@
 
 namespace RenderFramework
 {
-	class Mesh
+	struct Mesh
 	{
-	private:
+		// Geometry to define the shape of the Mesh
 		std::shared_ptr<Geometry> geometry;
+		// Material to define the appearance of the Mesh
 		std::shared_ptr<Material> material;
+		// Transform to define the position, orientation and scale of the Mesh
 		std::shared_ptr<Transform> transform;
-	public:
+
 		Mesh();
 		~Mesh();
-
-		std::shared_ptr<Transform> getTransform() const;
-		void setTransform(const std::shared_ptr<Transform>& value);
-		std::shared_ptr<Geometry> getGeometry() const;
-		void setGeometry(const std::shared_ptr<Geometry>& value);
-		std::shared_ptr<Material> getMaterial() const;
-		void setMaterial(const std::shared_ptr<Material>& value);
 	};
 }

@@ -179,10 +179,6 @@ namespace RenderFramework
 		return value;
 	}
 
-	/*
-	GETTERS AND SETTERS
-	*/
-
 	std::shared_ptr<Program> ContentManager::getProgram(const std::string& name)
 	{
 		auto found = instance->programs.find(name);

@@ -7,22 +7,16 @@
 
 namespace RenderFramework
 {
-	class Program
+	struct Program
 	{
-	public:
+		// OpenGL Program ID
 		GLuint id;
+		// Vector of Shaders that make up the Program
 		std::vector<std::shared_ptr<Shader>> shaders;
+		// A map of Uniforms in the compiled Program
 		std::unordered_map<std::string, Uniform> uniforms;
-		Program() : id(0) { }
-		~Program()
-		{
-			if (id)
-			{
-				for (auto& s : shaders)
-					glDetachShader(id, s->id);
-				glDeleteShader(id);
-				id = 0;
-			}
-		}
+
+		Program();
+		~Program();
 	};
 }

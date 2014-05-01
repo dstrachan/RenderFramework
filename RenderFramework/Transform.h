@@ -4,28 +4,28 @@
 
 namespace RenderFramework
 {
-	class Transform
+	struct Transform
 	{
-	private:
+		// Scale of the Transform
 		glm::vec3 scale;
+		// Orientation of the Transform
 		glm::quat orientation;
+		// Position of the Transform
 		glm::vec3 position;
-	public:
+
 		Transform();
 		~Transform();
 
+		// Translates the Transform by a given vector
 		void translate(const glm::vec3& value);
+		// Rotates the Transform by a given vector
 		void rotate(const glm::vec3& value);
+		// Rotates the Transform by a given quaternion
 		void rotate(const glm::quat& value);
 
+		// Returns the 4x4 transform matrix for the Transform
 		glm::mat4 getTransformMatrix();
+		// Returns the 3x3 normal matrix for the Transform
 		glm::mat3 getNormalMatrix();
-
-		glm::vec3 getScale() const;
-		void setScale(const glm::vec3& value);
-		glm::quat getOrientation() const;
-		void setOrientation(const glm::quat& value);
-		glm::vec3 getPosition() const;
-		void setPosition(const glm::vec3& value);
 	};
 }

@@ -6,9 +6,8 @@
 
 namespace RenderFramework
 {
-	class Scene
+	struct Scene
 	{
-	public:
 		// Vector containing all meshes
 		std::vector<std::shared_ptr<Mesh>> meshes;
 

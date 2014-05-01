@@ -4,6 +4,12 @@
 
 namespace RenderFramework
 {
+	CubeGeometry::CubeGeometry()
+		: Geometry()
+	{
+		init();
+	}
+
 	void CubeGeometry::init()
 	{
 		std::array<glm::vec3, 24> cube_positions = {

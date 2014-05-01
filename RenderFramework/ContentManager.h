@@ -2,7 +2,7 @@
 
 #include "stdafx.h"
 
-#include "Program.h"
+#include "Material.h"
 
 namespace RenderFramework
 {
@@ -29,10 +29,7 @@ namespace RenderFramework
 		static std::shared_ptr<Shader> loadShader(const std::string& name, const std::string& filename, int type);
 		// Creates a Program, then adds it to the ContentManager store
 		static std::shared_ptr<Program> createProgram(const std::string& name, std::vector<std::string> shaders);
-
-		/*
-		GETTERS AND SETTERS
-		*/
+		// Returns a Program identified by a given name
 		static std::shared_ptr<Program> getProgram(const std::string& name);
 	};
 }

@@ -4,16 +4,17 @@
 
 namespace RenderFramework
 {
-	class Uniform
+	struct Uniform
 	{
-	public:
+		// Uniform location
 		GLint location;
+		//Uniform type
 		GLenum type;
+		// Uniform size
 		GLint size;
-		Uniform() : location(0), type(GL_FLOAT), size(1) { }
-		Uniform(GLint location, GLenum type, GLint size)
-			: location(location), type(type), size(size)
-		{
-		}
+
+		Uniform();
+		Uniform(GLint location, GLenum type, GLint size);
+		~Uniform();
 	};
 }
