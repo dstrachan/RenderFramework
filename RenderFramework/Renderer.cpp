@@ -68,6 +68,8 @@ namespace RenderFramework
 		// Enable depth testing
 		glEnable(GL_DEPTH_TEST);
 
+		glClearColor(0.0f, 1.0f, 1.0f, 1.0f);
+
 		instance->running = true;
 
 		return true;
@@ -133,6 +135,14 @@ namespace RenderFramework
 		found = instance->program->uniforms.find("N");
 		if (found != instance->program->uniforms.end())
 			glUniformMatrix3fv(found->second.location, 1, GL_FALSE, glm::value_ptr(normal));
+		// Set the model view matrix
+		found = instance->program->uniforms.find("MV");
+		if (found != instance->program->uniforms.end())
+			glUniformMatrix4fv(found->second.location, 1, GL_FALSE, glm::value_ptr(view * model));
+		// Set the model view projection matrix
+		found = instance->program->uniforms.find("MVP");
+		if (found != instance->program->uniforms.end())
+			glUniformMatrix4fv(found->second.location, 1, GL_FALSE, glm::value_ptr(projection * view * model));
 	}
 
 	bool Renderer::render(std::shared_ptr<Scene> scene, std::shared_ptr<Camera> camera)
@@ -181,15 +191,18 @@ namespace RenderFramework
 			if (found != mesh->material->program->uniforms.end())
 				glUniform1f(found->second.location, mesh->material->shininess);
 
-			for (auto& light : scene->lights)
+			for (auto& light : scene->pointLights)
 			{
 				// Set light uniforms
 				found = mesh->material->program->uniforms.find("lightPos");
 				if (found != mesh->material->program->uniforms.end())
-					glUniform3fv(found->second.location, 1, glm::value_ptr(light->transform->position));
+					glUniform3fv(found->second.location, 1, glm::value_ptr(light->position));
 				found = mesh->material->program->uniforms.find("lightDiffuse");
 				if (found != mesh->material->program->uniforms.end())
 					glUniform4fv(found->second.location, 1, glm::value_ptr(light->diffuse));
+				found = mesh->material->program->uniforms.find("lightAttenuation");
+				if (found != mesh->material->program->uniforms.end())
+					glUniform3fv(found->second.location, 1, glm::value_ptr(light->attenuation));
 			}
 
 			// Render Geometry

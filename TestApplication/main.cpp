@@ -2,7 +2,7 @@
 
 std::shared_ptr<RenderFramework::Scene> scene;
 std::shared_ptr<RenderFramework::TargetCamera> camera;
-std::shared_ptr<RenderFramework::DirectionalLight> light;
+std::shared_ptr<RenderFramework::PointLight> light;
 
 void loadContent()
 {
@@ -17,32 +17,36 @@ void loadContent()
 
 	auto material = std::make_shared<RenderFramework::Material>();
 	material->program = program;
+	material->diffuse = glm::vec4(0.0f, 0.5f, 0.0f, 1.0f);
 
-	auto transform = std::make_shared<RenderFramework::Transform>();
+	auto meshTransform = std::make_shared<RenderFramework::Transform>();
+	meshTransform->position = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	auto mesh = std::make_shared<RenderFramework::Mesh>();
 	mesh->geometry = geometry;
 	mesh->material = material;
-	mesh->transform = transform;
+	mesh->transform = meshTransform;
 
 	scene = std::make_shared<RenderFramework::Scene>();
 	scene->meshes.push_back(mesh);
 
-	light = std::make_shared<RenderFramework::DirectionalLight>();
+	light = std::make_shared<RenderFramework::PointLight>();
 	auto lightTransform = std::make_shared<RenderFramework::Transform>();
-	lightTransform->position = glm::vec3(0.0f, 10.0f, 10.0f);
-	light->transform = lightTransform;
-	scene->lights.push_back(light);
+	light->position = glm::vec3(10.0f, 10.0f, 10.0f);
+	scene->pointLights.push_back(light);
 
 	camera = std::make_shared<RenderFramework::TargetCamera>();
 	camera->setProjection(glm::quarter_pi<float>(),
 		(float) RenderFramework::Renderer::getWidth() /
 		(float) RenderFramework::Renderer::getHeight(),
 		2.414f, 10000.0f);
+	camera->setPosition(glm::vec3(0.0f, 0.0f, 10.0f));
 }
 
 void render(float deltaTime)
 {	
+	if (glfwGetKey(RenderFramework::Renderer::getWindow(), GLFW_KEY_LEFT))
+		light->translate(glm::vec3(1.0f * deltaTime * 0.001f, 0.0f, 0.0f));
 	camera->update(deltaTime);
 	for (auto& mesh : scene->meshes)
 		mesh->transform->rotate(glm::vec3(0.0f, 1.0f, 0.0f) * deltaTime * 0.001f);

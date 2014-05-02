@@ -46,6 +46,12 @@ namespace RenderFramework
 			glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(-1.0f, 0.0f, 0.0f),
 			glm::vec3(0.0f, 1.0f, 0.0f), glm::vec3(0.0f, -1.0f, 0.0f)
 		};
+		std::array<glm::vec2, 4> cube_texcoords = {
+			glm::vec2(1.0f, 1.0f),
+			glm::vec2(0.0f, 1.0f),
+			glm::vec2(0.0f, 0.0f),
+			glm::vec2(1.0f, 0.0f)
+		};
 
 		for (auto i = 0; i < 24; ++i)
 		{

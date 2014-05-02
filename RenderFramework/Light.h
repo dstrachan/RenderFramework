@@ -6,26 +6,25 @@
 
 namespace RenderFramework
 {
-	class Light
+	struct Light : public Transform
 	{
 	protected:
 		Light();
 		virtual ~Light();
-	public:
-		// Transform to define the position, orientation and scale of the Light
-		std::shared_ptr<Transform> transform;
+	};
+
+	struct PointLight : public Light
+	{
 		// Diffuse colour
 		glm::vec4 diffuse;
+		// Attenuation values of the Light: x = constant; y = linear; z = quadratic
+		glm::vec3 attenuation;
+
+		PointLight();
+		~PointLight();
 	};
 
-	class DirectionalLight : public Light
-	{
-	public:
-		DirectionalLight();
-		~DirectionalLight();
-	};
-
-	/*class PointLight : public Light
+	/*class DirectionalLight : public Light
 	{
 	public:
 		PointLight();

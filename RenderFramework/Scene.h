@@ -9,10 +9,10 @@ namespace RenderFramework
 {
 	struct Scene
 	{
-		// Vector containing all meshes
+		// Vector containing all Meshes
 		std::vector<std::shared_ptr<Mesh>> meshes;
-		// Vector containing all lights
-		std::vector<std::shared_ptr<Light>> lights;
+		// Vector containing all PointLights
+		std::vector<std::shared_ptr<PointLight>> pointLights;
 
 		Scene();
 		~Scene();

@@ -131,7 +131,7 @@
     <ClCompile Include="Light.cpp">
       <Filter>Light</Filter>
     </ClCompile>
-    <ClCompile Include="DirectionalLight.cpp">
+    <ClCompile Include="PointLight.cpp">
       <Filter>Light</Filter>
     </ClCompile>
   </ItemGroup>

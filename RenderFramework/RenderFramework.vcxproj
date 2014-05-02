@@ -96,7 +96,7 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="ContentManager.cpp" />
     <ClCompile Include="CubeGeometry.cpp" />
-    <ClCompile Include="DirectionalLight.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="Geometry.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="Material.cpp" />
