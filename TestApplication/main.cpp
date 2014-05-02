@@ -2,6 +2,7 @@
 
 std::shared_ptr<RenderFramework::Scene> scene;
 std::shared_ptr<RenderFramework::TargetCamera> camera;
+std::shared_ptr<RenderFramework::DirectionalLight> light;
 
 void loadContent()
 {
@@ -27,6 +28,12 @@ void loadContent()
 	scene = std::make_shared<RenderFramework::Scene>();
 	scene->meshes.push_back(mesh);
 
+	light = std::make_shared<RenderFramework::DirectionalLight>();
+	auto lightTransform = std::make_shared<RenderFramework::Transform>();
+	lightTransform->position = glm::vec3(0.0f, 10.0f, 10.0f);
+	light->transform = lightTransform;
+	scene->lights.push_back(light);
+
 	camera = std::make_shared<RenderFramework::TargetCamera>();
 	camera->setProjection(glm::quarter_pi<float>(),
 		(float) RenderFramework::Renderer::getWidth() /
@@ -37,6 +44,8 @@ void loadContent()
 void render(float deltaTime)
 {	
 	camera->update(deltaTime);
+	for (auto& mesh : scene->meshes)
+		mesh->transform->rotate(glm::vec3(0.0f, 1.0f, 0.0f) * deltaTime * 0.001f);
 
 	RenderFramework::Renderer::render(scene, camera);
 }

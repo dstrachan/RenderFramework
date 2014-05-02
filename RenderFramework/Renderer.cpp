@@ -65,6 +65,9 @@ namespace RenderFramework
 			return false;
 		}
 
+		// Enable depth testing
+		glEnable(GL_DEPTH_TEST);
+
 		instance->running = true;
 
 		return true;
@@ -89,7 +92,7 @@ namespace RenderFramework
 			return false;
 		}
 
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 		return true;
 	}
@@ -168,7 +171,7 @@ namespace RenderFramework
 			found = mesh->material->program->uniforms.find("ambient");
 			if (found != mesh->material->program->uniforms.end())
 				glUniform4fv(found->second.location, 1, glm::value_ptr(mesh->material->ambient));
-			found = mesh->material->program->uniforms.find("diffuse");
+			found = mesh->material->program->uniforms.find("materialDiffuse");
 			if (found != mesh->material->program->uniforms.end())
 				glUniform4fv(found->second.location, 1, glm::value_ptr(mesh->material->diffuse));
 			found = mesh->material->program->uniforms.find("specular");
@@ -177,6 +180,17 @@ namespace RenderFramework
 			found = mesh->material->program->uniforms.find("shininess");
 			if (found != mesh->material->program->uniforms.end())
 				glUniform1f(found->second.location, mesh->material->shininess);
+
+			for (auto& light : scene->lights)
+			{
+				// Set light uniforms
+				found = mesh->material->program->uniforms.find("lightPos");
+				if (found != mesh->material->program->uniforms.end())
+					glUniform3fv(found->second.location, 1, glm::value_ptr(light->transform->position));
+				found = mesh->material->program->uniforms.find("lightDiffuse");
+				if (found != mesh->material->program->uniforms.end())
+					glUniform4fv(found->second.location, 1, glm::value_ptr(light->diffuse));
+			}
 
 			// Render Geometry
 			glBindVertexArray(mesh->geometry->getVAO());

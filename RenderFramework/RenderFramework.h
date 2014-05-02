@@ -9,3 +9,4 @@
 #include "Mesh.h"
 #include "Scene.h"
 #include "Transform.h"
+#include "Light.h"

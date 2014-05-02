@@ -41,5 +41,6 @@ namespace RenderFramework
 		void init();
 	public:
 		CubeGeometry();
+		~CubeGeometry();
 	};
 }
