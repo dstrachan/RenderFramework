@@ -19,13 +19,10 @@ void loadContent()
 	material->program = program;
 	material->diffuse = glm::vec4(0.0f, 0.5f, 0.0f, 1.0f);
 
-	auto meshTransform = std::make_shared<RenderFramework::Transform>();
-	meshTransform->position = glm::vec3(0.0f, 0.0f, 0.0f);
-
 	auto mesh = std::make_shared<RenderFramework::Mesh>();
 	mesh->geometry = geometry;
 	mesh->material = material;
-	mesh->transform = meshTransform;
+	mesh->position = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	scene = std::make_shared<RenderFramework::Scene>();
 	scene->meshes.push_back(mesh);
@@ -49,7 +46,7 @@ void render(float deltaTime)
 		light->translate(glm::vec3(1.0f * deltaTime * 0.001f, 0.0f, 0.0f));
 	camera->update(deltaTime);
 	for (auto& mesh : scene->meshes)
-		mesh->transform->rotate(glm::vec3(0.0f, 1.0f, 0.0f) * deltaTime * 0.001f);
+		mesh->rotate(glm::vec3(0.0f, 1.0f, 0.0f) * deltaTime * 0.001f);
 
 	RenderFramework::Renderer::render(scene, camera);
 }

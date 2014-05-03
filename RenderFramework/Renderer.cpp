@@ -168,7 +168,7 @@ namespace RenderFramework
 			}
 
 			// Set MVP values
-			auto model = mesh->transform->getTransformMatrix();
+			auto model = mesh->getTransformMatrix();
 			auto view = camera->getView();
 			auto projection = camera->getProjection();
 			auto normal = glm::mat3(glm::inverse(glm::transpose(model)));
