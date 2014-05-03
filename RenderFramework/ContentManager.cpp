@@ -37,7 +37,7 @@ namespace RenderFramework
 	std::shared_ptr<Shader> ContentManager::loadShader(const std::string& name, const std::string& filename, int type)
 	{
 		// Check if Shader exists
-		if (instance->shaders.find(name) != instance->shaders.end())
+		if (instance->shaderMap.find(name) != instance->shaderMap.end())
 		{
 #if defined(_DEBUG)
 			std::cerr << "[ERROR]: ContentManager::loadShader - Name already exists" << std::endl;
@@ -81,7 +81,7 @@ namespace RenderFramework
 			return nullptr;
 		}
 
-		instance->shaders[name] = value;
+		instance->shaderMap[name] = value;
 #if defined(_DEBUG)
 		std::clog << "LOG - Shader " << name.c_str() << " loaded" << std::endl;
 #endif
@@ -91,7 +91,7 @@ namespace RenderFramework
 	std::shared_ptr<Program> ContentManager::createProgram(const std::string& name, std::vector<std::string> shaders)
 	{
 		// Check if Program exists
-		if (instance->programs.find(name) != instance->programs.end())
+		if (instance->programMap.find(name) != instance->programMap.end())
 		{
 #if defined(_DEBUG)
 			std::cerr << "[ERROR]: ContentManager::createProgram - Name already exists" << std::endl;
@@ -105,8 +105,8 @@ namespace RenderFramework
 		// Iterate Shader names and add to Program object
 		for (auto& name : shaders)
 		{
-			auto found = instance->shaders.find(name);
-			if (found == instance->shaders.end())
+			auto found = instance->shaderMap.find(name);
+			if (found == instance->shaderMap.end())
 			{
 #if defined(_DEBUG)
 				std::cerr << "[ERROR]: ContentManager::createProgram - Shader " << name << " does not exist" << std::endl;
@@ -175,18 +175,81 @@ namespace RenderFramework
 				value->uniforms[name] = Uniform(uniform_location, type, size);
 		}
 
-		instance->programs[name] = value;
+		instance->programMap[name] = value;
 		return value;
 	}
 
-	std::shared_ptr<Program> ContentManager::getProgram(const std::string& name)
+	template<>
+	std::shared_ptr<CubeGeometry> ContentManager::create(const std::string& name)
 	{
-		auto found = instance->programs.find(name);
-		if (found != instance->programs.end())
-			return found->second;
+		std::cout << "CUBEGEOMETRY" << std::endl;
+		auto geometry = std::make_shared<CubeGeometry>();
+		instance->geometryMap[name] = geometry;
+		return geometry;
+	}
+
+	template<>
+	std::shared_ptr<Material> ContentManager::create(const std::string& name,
+		const std::string& program)
+	{
+		std::cout << "MATERIAL" << std::endl;
+		auto material = std::make_shared<Material>();
+		get(material->program, program);
+		instance->materialMap[name] = material;
+		return material;
+	}
+
+	template<>
+	std::shared_ptr<Mesh> ContentManager::create(const std::string& name, const std::string& geometry,
+		const std::string& material)
+	{
+		std::cout << "MESH" << std::endl;
+		auto mesh = std::make_shared<Mesh>();
+		get(mesh->geometry, geometry);
+		get(mesh->material, material);
+		instance->meshMap[name] = mesh;
+		return mesh;
+	}
+
+	void ContentManager::get(std::shared_ptr<Program>& output, const std::string& name)
+	{
+		auto found = instance->programMap.find(name);
+		if (found != instance->programMap.end())
+			output = found->second;
+		else
+		{
 #if defined(_DEBUG)
-		std::cerr << "ERROR - Program " << name << " not found" << std::endl;
+			std::cerr << "ERROR - Program " << name << " not found" << std::endl;
 #endif
-		return nullptr;
+			output = nullptr;
+		}
+	}
+
+	void ContentManager::get(std::shared_ptr<Geometry>& output, const std::string& name)
+	{
+		auto found = instance->geometryMap.find(name);
+		if (found != instance->geometryMap.end())
+			output = found->second;
+		else
+		{
+#if defined(_DEBUG)
+			std::cerr << "ERROR - Geometry " << name << " not found" << std::endl;
+#endif
+			output = nullptr;
+		}
+	}
+	
+	void ContentManager::get(std::shared_ptr<Material>& output, const std::string& name)
+	{
+		auto found = instance->materialMap.find(name);
+		if (found != instance->materialMap.end())
+			output = found->second;
+		else
+		{
+#if defined(_DEBUG)
+			std::cerr << "ERROR - Material " << name << " not found" << std::endl;
+#endif
+			output = nullptr;
+		}
 	}
 }

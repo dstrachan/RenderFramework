@@ -10,18 +10,17 @@ void loadContent()
 		GL_VERTEX_SHADER);
 	RenderFramework::ContentManager::loadShader("basic_frag", "Shaders/basic.frag",
 		GL_FRAGMENT_SHADER);
-	auto program = RenderFramework::ContentManager::createProgram("basic",
+	auto program = RenderFramework::ContentManager::createProgram("basic_program",
 		{ "basic_vert", "basic_frag" });
 
-	auto geometry = std::make_shared<RenderFramework::CubeGeometry>();
+	auto geometry = RenderFramework::ContentManager::create<RenderFramework::CubeGeometry>("cube");
 
-	auto material = std::make_shared<RenderFramework::Material>();
-	material->program = program;
+	auto material = RenderFramework::ContentManager::create<RenderFramework::Material>(
+		"basic_material", "basic_program");
 	material->diffuse = glm::vec4(0.0f, 0.5f, 0.0f, 1.0f);
 
-	auto mesh = std::make_shared<RenderFramework::Mesh>();
-	mesh->geometry = geometry;
-	mesh->material = material;
+	auto mesh = RenderFramework::ContentManager::create<RenderFramework::Mesh>("basic_mesh",
+		"cube", "basic_material");
 	mesh->position = glm::vec3(0.0f, 0.0f, 0.0f);
 
 	scene = std::make_shared<RenderFramework::Scene>();
