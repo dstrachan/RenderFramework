@@ -7,6 +7,7 @@
 #include "Geometry.h"
 #include "Material.h"
 #include "Mesh.h"
+#include "Scene.h"
 
 namespace RenderFramework
 {
@@ -23,6 +24,8 @@ namespace RenderFramework
 		std::unordered_map<std::string, std::shared_ptr<Material>> materialMap;
 		// Data store for all Meshes
 		std::unordered_map<std::string, std::shared_ptr<Mesh>> meshMap;
+		// Data store for all Scenes
+		std::unordered_map<std::string, std::shared_ptr<Scene>> sceneMap;
 		// Singleton instance
 		static ContentManager* instance;
 
@@ -35,22 +38,84 @@ namespace RenderFramework
 	public:
 		~ContentManager();
 
-		// Loads a shader from a file, then adds it to the ContentManager store
-		static std::shared_ptr<Shader> loadShader(const std::string& name, const std::string& filename, int type);
-		// Creates a Program, then adds it to the ContentManager store
-		static std::shared_ptr<Program> createProgram(const std::string& name, std::vector<std::string> shaders);
+		// Gets content from the ContentManager store
+		template <typename T>
+		static std::shared_ptr<T> get(const char* name);
 
-		template <typename T>
-		static std::shared_ptr<T> create(const std::string& name);
-		template <typename T>
-		static std::shared_ptr<T> create(const std::string& name, const std::string& parameter1);
-		template <typename T>
-		static std::shared_ptr<T> create(const std::string& name, const std::string& parameter1, const std::string& parameter2);
+		// Loads content from a file, then adds it to the ContentManager store
+		template <typename T, typename... Arguments>
+		static std::shared_ptr<T> load(const char* name, Arguments... parameters);
 
-		static void get(std::shared_ptr<Shader>& ptr, const std::string& name);
-		static void get(std::shared_ptr<Program>& ptr, const std::string& name);
-		static void get(std::shared_ptr<Geometry>& ptr, const std::string& name);
-		static void get(std::shared_ptr<Material>& ptr, const std::string& name);
-		static void get(std::shared_ptr<Mesh>& ptr, const std::string& name);
+		// Creates content from existing content, then adds it to the ContentManager store
+		template <typename T, typename... Arguments>
+		static std::shared_ptr<T> create(const char* name, Arguments... parameters);
 	};
+
+	// Get
+	extern template std::shared_ptr<Shader> ContentManager::get(const char* name);
+	extern template std::shared_ptr<Program> ContentManager::get(const char* name);
+	extern template std::shared_ptr<Geometry> ContentManager::get(const char* name);
+	extern template std::shared_ptr<Material> ContentManager::get(const char* name);
+	extern template std::shared_ptr<Mesh> ContentManager::get(const char* name);
+	extern template std::shared_ptr<Scene> ContentManager::get(const char* name);
+
+	// Load
+	extern template std::shared_ptr<Shader> ContentManager::load(const char* name,
+		const char* filename, int type);
+
+	// Create
+	extern template std::shared_ptr<Program> ContentManager::create(const char* name,
+		std::vector<std::string> shaders);
+	extern template std::shared_ptr<CubeGeometry> ContentManager::create(const char* name);
+	extern template std::shared_ptr<Material> ContentManager::create(const char* name,
+		const char* program);
+	extern template std::shared_ptr<Mesh> ContentManager::create(const char* name,
+		const char* geometry, const char* material);
+	extern template std::shared_ptr<Scene> ContentManager::create(const char* name,
+		std::vector<std::string> meshes);
+
+	// Error handling
+	template <typename T>
+	std::shared_ptr<T> ContentManager::get(const char* name)
+	{
+		std::cerr << "Error trying to get object from content manager of unknown type" << std::endl;
+		std::cerr << "Type of: " << typeid(T).name() << std::endl;
+		return nullptr;
+	}
+
+	template <typename T, typename... Arguments>
+	std::shared_ptr<T> ContentManager::load(const char* name, Arguments... parameters)
+	{
+		check(parameters...);
+		std::cerr << "Error trying to load object of unknown type or with incorrect parameters"
+			<< std::endl;
+		std::cerr << "Type of: " << typeid(T).name() << std::endl;
+		return nullptr;
+	}
+
+	template <typename... Arguments>
+	void check(Arguments... args);
+
+	template <typename T>
+	void check(T arg)
+	{
+		std::cerr << "Type : " << typeid(T).name() << std::endl;
+	}
+
+	template <typename T, typename... Arguments>
+	void check(T val, Arguments... args)
+	{
+		std::cerr << "Type : " << typeid(T).name() << std::endl;
+		check(args...);
+	}
+
+	template <typename T, typename... Arguments>
+	std::shared_ptr<T> ContentManager::create(const char* name, Arguments... parameters)
+	{
+		check(parameters...);
+		std::cerr << "Error trying to create object of unknown type or with incorrect parameters"
+			<< std::endl;
+		std::cerr << "Type of: " << typeid(T).name() << std::endl;
+		return nullptr;
+	}
 }

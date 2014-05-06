@@ -6,12 +6,12 @@ std::shared_ptr<RenderFramework::PointLight> light;
 
 void loadContent()
 {
-	RenderFramework::ContentManager::loadShader("basic_vert", "Shaders/basic.vert",
+	RenderFramework::ContentManager::load<RenderFramework::Shader>("basic_vert", "Shaders/basic.vert",
 		GL_VERTEX_SHADER);
-	RenderFramework::ContentManager::loadShader("basic_frag", "Shaders/basic.frag",
+	RenderFramework::ContentManager::load<RenderFramework::Shader>("basic_frag", "Shaders/basic.frag",
 		GL_FRAGMENT_SHADER);
-	auto program = RenderFramework::ContentManager::createProgram("basic_program",
-		{ "basic_vert", "basic_frag" });
+	auto program = RenderFramework::ContentManager::create<RenderFramework::Program>(
+		"basic_program", std::vector<std::string>{ "basic_vert", "basic_frag" });
 
 	auto geometry = RenderFramework::ContentManager::create<RenderFramework::CubeGeometry>("cube");
 
@@ -23,8 +23,8 @@ void loadContent()
 		"cube", "basic_material");
 	mesh->position = glm::vec3(0.0f, 0.0f, 0.0f);
 
-	scene = std::make_shared<RenderFramework::Scene>();
-	scene->meshes.push_back(mesh);
+	scene = RenderFramework::ContentManager::create<RenderFramework::Scene>("basic_scene",
+		std::vector<std::string>{ "basic_mesh" });
 
 	light = std::make_shared<RenderFramework::PointLight>();
 	auto lightTransform = std::make_shared<RenderFramework::Transform>();

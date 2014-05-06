@@ -14,6 +14,78 @@ namespace RenderFramework
 	{
 	}
 
+	template <>
+	std::shared_ptr<Shader> ContentManager::get(const char* name)
+	{
+		auto found = instance->shaderMap.find(name);
+		if (found != instance->shaderMap.end())
+			return found->second;
+#if defined(_DEBUG)
+		std::cerr << "ERROR - Shader " << name << " not found" << std::endl;
+#endif
+		return nullptr;
+	}
+
+	template <>
+	std::shared_ptr<Program> ContentManager::get(const char* name)
+	{
+		auto found = instance->programMap.find(name);
+		if (found != instance->programMap.end())
+			return found->second;
+#if defined(_DEBUG)
+		std::cerr << "ERROR - Program " << name << " not found" << std::endl;
+#endif
+		return nullptr;
+	}
+
+	template <>
+	std::shared_ptr<Geometry> ContentManager::get(const char* name)
+	{
+		auto found = instance->geometryMap.find(name);
+		if (found != instance->geometryMap.end())
+			return found->second;
+#if defined(_DEBUG)
+		std::cerr << "ERROR - Geometry " << name << " not found" << std::endl;
+#endif
+		return nullptr;
+	}
+
+	template <>
+	std::shared_ptr<Material> ContentManager::get(const char* name)
+	{
+		auto found = instance->materialMap.find(name);
+		if (found != instance->materialMap.end())
+			return found->second;
+#if defined(_DEBUG)
+		std::cerr << "ERROR - Material " << name << " not found" << std::endl;
+#endif
+		return nullptr;
+	}
+
+	template <>
+	std::shared_ptr<Mesh> ContentManager::get(const char* name)
+	{
+		auto found = instance->meshMap.find(name);
+		if (found != instance->meshMap.end())
+			return found->second;
+#if defined(_DEBUG)
+		std::cerr << "ERROR - Mesh " << name << " not found" << std::endl;
+#endif
+		return nullptr;
+	}
+
+	template <>
+	std::shared_ptr<Scene> ContentManager::get(const char* name)
+	{
+		auto found = instance->sceneMap.find(name);
+		if (found != instance->sceneMap.end())
+			return found->second;
+#if defined(_DEBUG)
+		std::cerr << "ERROR - Scene " << name << " not found" << std::endl;
+#endif
+		return nullptr;
+	}
+
 	bool read_file(const std::string& filename, std::string& content)
 	{
 		// Create filestream
@@ -34,7 +106,8 @@ namespace RenderFramework
 		return true;
 	}
 
-	std::shared_ptr<Shader> ContentManager::loadShader(const std::string& name, const std::string& filename, int type)
+	template <>
+	std::shared_ptr<Shader> ContentManager::load(const char* name, const char* filename, int type)
 	{
 		// Check if Shader exists
 		if (instance->shaderMap.find(name) != instance->shaderMap.end())
@@ -49,7 +122,7 @@ namespace RenderFramework
 		if (!read_file(filename, content))
 		{
 #if defined(_DEBUG)
-			std::cerr << "[ERROR]: ContentManager::loadShader - Could not read file " << filename.c_str() << std::endl;
+			std::cerr << "[ERROR]: ContentManager::loadShader - Could not read file " << filename << std::endl;
 #endif
 			return nullptr;
 		}
@@ -74,7 +147,7 @@ namespace RenderFramework
 			glGetShaderiv(value->id, GL_INFO_LOG_LENGTH, &length);
 			std::vector<char> log(length);
 			glGetShaderInfoLog(value->id, length, &length, &log[0]);
-			std::cerr << "[ERROR]: ContentManager::loadShader - Could not compile Shader " << filename.c_str() << std::endl;
+			std::cerr << "[ERROR]: ContentManager::loadShader - Could not compile Shader " << filename << std::endl;
 			std::cerr << &log[0] << std::endl;
 #endif
 			glDeleteShader(value->id);
@@ -83,12 +156,13 @@ namespace RenderFramework
 
 		instance->shaderMap[name] = value;
 #if defined(_DEBUG)
-		std::clog << "LOG - Shader " << name.c_str() << " loaded" << std::endl;
+		std::clog << "LOG - Shader " << name << " loaded" << std::endl;
 #endif
 		return value;
 	}
 
-	std::shared_ptr<Program> ContentManager::createProgram(const std::string& name, std::vector<std::string> shaders)
+	template <>
+	std::shared_ptr<Program> ContentManager::create(const char* name, std::vector<std::string> shaders)
 	{
 		// Check if Program exists
 		if (instance->programMap.find(name) != instance->programMap.end())
@@ -179,77 +253,43 @@ namespace RenderFramework
 		return value;
 	}
 
-	template<>
-	std::shared_ptr<CubeGeometry> ContentManager::create(const std::string& name)
+	template <>
+	std::shared_ptr<CubeGeometry> ContentManager::create(const char* name)
 	{
-		std::cout << "CUBEGEOMETRY" << std::endl;
 		auto geometry = std::make_shared<CubeGeometry>();
 		instance->geometryMap[name] = geometry;
 		return geometry;
 	}
 
-	template<>
-	std::shared_ptr<Material> ContentManager::create(const std::string& name,
-		const std::string& program)
+	template <>
+	std::shared_ptr<Material> ContentManager::create(const char* name,
+		const char* program)
 	{
-		std::cout << "MATERIAL" << std::endl;
 		auto material = std::make_shared<Material>();
-		get(material->program, program);
+		material->program = get<Program>(program);
 		instance->materialMap[name] = material;
 		return material;
 	}
 
-	template<>
-	std::shared_ptr<Mesh> ContentManager::create(const std::string& name, const std::string& geometry,
-		const std::string& material)
+	template <>
+	std::shared_ptr<Mesh> ContentManager::create(const char* name, const char* geometry, const char* material)
 	{
-		std::cout << "MESH" << std::endl;
 		auto mesh = std::make_shared<Mesh>();
-		get(mesh->geometry, geometry);
-		get(mesh->material, material);
+		mesh->geometry = get<Geometry>(geometry);
+		mesh->material = get<Material>(material);
 		instance->meshMap[name] = mesh;
 		return mesh;
 	}
 
-	void ContentManager::get(std::shared_ptr<Program>& output, const std::string& name)
+	template <>
+	std::shared_ptr<Scene> ContentManager::create(const char* name, std::vector<std::string> meshes)
 	{
-		auto found = instance->programMap.find(name);
-		if (found != instance->programMap.end())
-			output = found->second;
-		else
+		auto scene = std::make_shared<Scene>();
+		for (auto& m : meshes)
 		{
-#if defined(_DEBUG)
-			std::cerr << "ERROR - Program " << name << " not found" << std::endl;
-#endif
-			output = nullptr;
+			scene->meshes.push_back(get<Mesh>(m.c_str()));
 		}
-	}
-
-	void ContentManager::get(std::shared_ptr<Geometry>& output, const std::string& name)
-	{
-		auto found = instance->geometryMap.find(name);
-		if (found != instance->geometryMap.end())
-			output = found->second;
-		else
-		{
-#if defined(_DEBUG)
-			std::cerr << "ERROR - Geometry " << name << " not found" << std::endl;
-#endif
-			output = nullptr;
-		}
-	}
-	
-	void ContentManager::get(std::shared_ptr<Material>& output, const std::string& name)
-	{
-		auto found = instance->materialMap.find(name);
-		if (found != instance->materialMap.end())
-			output = found->second;
-		else
-		{
-#if defined(_DEBUG)
-			std::cerr << "ERROR - Material " << name << " not found" << std::endl;
-#endif
-			output = nullptr;
-		}
+		instance->sceneMap[name] = scene;
+		return scene;
 	}
 }
