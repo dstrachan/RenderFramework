@@ -273,11 +273,13 @@ namespace RenderFramework
 	}
 
 	template <>
-	std::shared_ptr<Mesh> ContentManager::create(const char* name, const char* geometry, const char* material)
+	std::shared_ptr<Mesh> ContentManager::create(const char* name, const char* geometry,
+		const char* material, std::map<std::string, glm::vec3> parameters)
 	{
 		auto mesh = std::make_shared<Mesh>();
 		mesh->geometry = get<Geometry>(geometry);
 		mesh->material = get<Material>(material);
+		mesh->position = parameters.at("position");
 		instance->meshMap[name] = mesh;
 		return mesh;
 	}

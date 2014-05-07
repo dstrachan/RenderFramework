@@ -21,8 +21,9 @@ void loadContent()
 	});
 
 	auto mesh = RenderFramework::ContentManager::create<RenderFramework::Mesh>("basic_mesh",
-		"cube", "basic_material");
-	mesh->position = glm::vec3(0.0f, 0.0f, 0.0f);
+		"cube", "basic_material", std::map<std::string, glm::vec3>{
+			{ "position", glm::vec3(0.0f, 0.0f, 0.0f) }
+	});
 
 	scene = RenderFramework::ContentManager::create<RenderFramework::Scene>("basic_scene",
 		std::vector<std::string>{ "basic_mesh" });

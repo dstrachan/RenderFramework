@@ -70,7 +70,7 @@ namespace RenderFramework
 	extern template std::shared_ptr<Material> ContentManager::create(const char* name,
 		const char* program, std::map<std::string, glm::vec4> parameters);
 	extern template std::shared_ptr<Mesh> ContentManager::create(const char* name,
-		const char* geometry, const char* material);
+		const char* geometry, const char* material, std::map<std::string, glm::vec3> parameters);
 	extern template std::shared_ptr<Scene> ContentManager::create(const char* name,
 		std::vector<std::string> meshes);
 
