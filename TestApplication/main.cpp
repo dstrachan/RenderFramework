@@ -2,37 +2,44 @@
 
 std::shared_ptr<RenderFramework::Scene> scene;
 std::shared_ptr<RenderFramework::TargetCamera> camera;
-std::shared_ptr<RenderFramework::PointLight> light;
 
 void loadContent()
 {
+	// Load Shaders from files
 	RenderFramework::ContentManager::load<RenderFramework::Shader>("basic_vert", "Shaders/basic.vert",
 		GL_VERTEX_SHADER);
 	RenderFramework::ContentManager::load<RenderFramework::Shader>("basic_frag", "Shaders/basic.frag",
 		GL_FRAGMENT_SHADER);
-	auto program = RenderFramework::ContentManager::create<RenderFramework::Program>(
-		"basic_program", std::vector<std::string>{ "basic_vert", "basic_frag" });
+	// Create Program from Shaders
+	RenderFramework::ContentManager::create<RenderFramework::Program>("basic_program",
+		std::vector<std::string>{ "basic_vert", "basic_frag" });
 
-	auto geometry = RenderFramework::ContentManager::create<RenderFramework::CubeGeometry>("cube");
+	// Create CubeGeometry
+	RenderFramework::ContentManager::create<RenderFramework::CubeGeometry>("cube");
 
-	auto material = RenderFramework::ContentManager::create<RenderFramework::Material>(
-		"basic_material", "basic_program", std::map<std::string, glm::vec4>{
+	// Create Material from Program, then set diffuse colour
+	RenderFramework::ContentManager::create<RenderFramework::Material>("basic_material",
+		"basic_program", std::map<std::string, glm::vec4>{
 			{ "diffuse", glm::vec4(0.0f, 0.5f, 0.0f, 1.0f) }
 	});
 
-	auto mesh = RenderFramework::ContentManager::create<RenderFramework::Mesh>("basic_mesh",
-		"cube", "basic_material", std::map<std::string, glm::vec3>{
+	// Create Mesh from CubeGeometry and Material, then set position
+	RenderFramework::ContentManager::create<RenderFramework::Mesh>("basic_mesh", "cube",
+		"basic_material", std::map<std::string, glm::vec3>{
 			{ "position", glm::vec3(0.0f, 0.0f, 0.0f) }
 	});
 
-	light = RenderFramework::ContentManager::create<RenderFramework::PointLight>("basic_light",
+	// Create PointLight then set position
+	RenderFramework::ContentManager::create<RenderFramework::PointLight>("basic_light",
 		std::map<std::string, glm::vec3>{
 			{ "position", glm::vec3(10.0f, 10.0f, 10.0f) }
 	});
 
+	// Create Scene from Mesh and PointLight
 	scene = RenderFramework::ContentManager::create<RenderFramework::Scene>("basic_scene",
 		std::vector<std::string>{ "basic_mesh" }, std::vector<std::string>{ "basic_light" });
 
+	// Create TargetCamera
 	camera = std::make_shared<RenderFramework::TargetCamera>();
 	camera->setProjection(glm::quarter_pi<float>(),
 		(float) RenderFramework::Renderer::getWidth() /
@@ -44,7 +51,10 @@ void loadContent()
 void render(float deltaTime)
 {	
 	if (glfwGetKey(RenderFramework::Renderer::getWindow(), GLFW_KEY_LEFT))
-		light->translate(glm::vec3(1.0f * deltaTime * 0.001f, 0.0f, 0.0f));
+	{
+		for (auto& light : scene->pointLights)
+			light->translate(glm::vec3(1.0f * deltaTime * 0.001f, 0.0f, 0.0f));
+	}
 	camera->update(deltaTime);
 	for (auto& mesh : scene->meshes)
 		mesh->rotate(glm::vec3(0.0f, 1.0f, 0.0f) * deltaTime * 0.001f);
