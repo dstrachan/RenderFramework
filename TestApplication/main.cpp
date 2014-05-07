@@ -16,8 +16,9 @@ void loadContent()
 	auto geometry = RenderFramework::ContentManager::create<RenderFramework::CubeGeometry>("cube");
 
 	auto material = RenderFramework::ContentManager::create<RenderFramework::Material>(
-		"basic_material", "basic_program");
-	material->diffuse = glm::vec4(0.0f, 0.5f, 0.0f, 1.0f);
+		"basic_material", "basic_program", std::map<std::string, glm::vec4>{
+			{ "diffuse", glm::vec4(0.0f, 0.5f, 0.0f, 1.0f) }
+	});
 
 	auto mesh = RenderFramework::ContentManager::create<RenderFramework::Mesh>("basic_mesh",
 		"cube", "basic_material");

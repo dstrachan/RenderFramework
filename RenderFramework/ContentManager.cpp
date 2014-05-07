@@ -263,10 +263,11 @@ namespace RenderFramework
 
 	template <>
 	std::shared_ptr<Material> ContentManager::create(const char* name,
-		const char* program)
+		const char* program, std::map<std::string, glm::vec4> parameters)
 	{
 		auto material = std::make_shared<Material>();
 		material->program = get<Program>(program);
+		material->diffuse = parameters.at("diffuse");
 		instance->materialMap[name] = material;
 		return material;
 	}

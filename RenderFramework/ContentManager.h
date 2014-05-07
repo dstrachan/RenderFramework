@@ -68,7 +68,7 @@ namespace RenderFramework
 		std::vector<std::string> shaders);
 	extern template std::shared_ptr<CubeGeometry> ContentManager::create(const char* name);
 	extern template std::shared_ptr<Material> ContentManager::create(const char* name,
-		const char* program);
+		const char* program, std::map<std::string, glm::vec4> parameters);
 	extern template std::shared_ptr<Mesh> ContentManager::create(const char* name,
 		const char* geometry, const char* material);
 	extern template std::shared_ptr<Scene> ContentManager::create(const char* name,
