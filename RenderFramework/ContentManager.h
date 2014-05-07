@@ -8,6 +8,7 @@
 #include "Material.h"
 #include "Mesh.h"
 #include "Scene.h"
+#include "Light.h"
 
 namespace RenderFramework
 {
@@ -26,6 +27,8 @@ namespace RenderFramework
 		std::unordered_map<std::string, std::shared_ptr<Mesh>> meshMap;
 		// Data store for all Scenes
 		std::unordered_map<std::string, std::shared_ptr<Scene>> sceneMap;
+		// Data store for all PointLights
+		std::unordered_map<std::string, std::shared_ptr<PointLight>> pointLightMap;
 		// Singleton instance
 		static ContentManager* instance;
 
@@ -58,6 +61,7 @@ namespace RenderFramework
 	extern template std::shared_ptr<Material> ContentManager::get(const char* name);
 	extern template std::shared_ptr<Mesh> ContentManager::get(const char* name);
 	extern template std::shared_ptr<Scene> ContentManager::get(const char* name);
+	extern template std::shared_ptr<PointLight> ContentManager::get(const char* name);
 
 	// Load
 	extern template std::shared_ptr<Shader> ContentManager::load(const char* name,
@@ -72,7 +76,9 @@ namespace RenderFramework
 	extern template std::shared_ptr<Mesh> ContentManager::create(const char* name,
 		const char* geometry, const char* material, std::map<std::string, glm::vec3> parameters);
 	extern template std::shared_ptr<Scene> ContentManager::create(const char* name,
-		std::vector<std::string> meshes);
+		std::vector<std::string> meshes, std::vector<std::string> lights);
+	extern template std::shared_ptr<PointLight> ContentManager::create(const char* name,
+		std::map<std::string, glm::vec3> parameters);
 
 	// Error handling
 	template <typename T>

@@ -86,6 +86,18 @@ namespace RenderFramework
 		return nullptr;
 	}
 
+	template <>
+	std::shared_ptr<PointLight> ContentManager::get(const char* name)
+	{
+		auto found = instance->pointLightMap.find(name);
+		if (found != instance->pointLightMap.end())
+			return found->second;
+#if defined(_DEBUG)
+		std::cerr << "ERROR - Light " << name << " not found" << std::endl;
+#endif
+		return nullptr;
+	}
+
 	bool read_file(const std::string& filename, std::string& content)
 	{
 		// Create filestream
@@ -285,14 +297,29 @@ namespace RenderFramework
 	}
 
 	template <>
-	std::shared_ptr<Scene> ContentManager::create(const char* name, std::vector<std::string> meshes)
+	std::shared_ptr<Scene> ContentManager::create(const char* name, std::vector<std::string> meshes,
+		std::vector<std::string> lights)
 	{
 		auto scene = std::make_shared<Scene>();
 		for (auto& m : meshes)
 		{
 			scene->meshes.push_back(get<Mesh>(m.c_str()));
 		}
+		for (auto& l : lights)
+		{
+			scene->pointLights.push_back(get<PointLight>(l.c_str()));
+		}
 		instance->sceneMap[name] = scene;
 		return scene;
+	}
+
+	template <>
+	std::shared_ptr<PointLight> ContentManager::create(const char* name,
+		std::map<std::string, glm::vec3> parameters)
+	{
+		auto pointLight = std::make_shared<PointLight>();
+		pointLight->position = parameters.at("position");
+		instance->pointLightMap[name] = pointLight;
+		return pointLight;
 	}
 }

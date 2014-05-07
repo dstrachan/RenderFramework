@@ -25,13 +25,13 @@ void loadContent()
 			{ "position", glm::vec3(0.0f, 0.0f, 0.0f) }
 	});
 
-	scene = RenderFramework::ContentManager::create<RenderFramework::Scene>("basic_scene",
-		std::vector<std::string>{ "basic_mesh" });
+	light = RenderFramework::ContentManager::create<RenderFramework::PointLight>("basic_light",
+		std::map<std::string, glm::vec3>{
+			{ "position", glm::vec3(10.0f, 10.0f, 10.0f) }
+	});
 
-	light = std::make_shared<RenderFramework::PointLight>();
-	auto lightTransform = std::make_shared<RenderFramework::Transform>();
-	light->position = glm::vec3(10.0f, 10.0f, 10.0f);
-	scene->pointLights.push_back(light);
+	scene = RenderFramework::ContentManager::create<RenderFramework::Scene>("basic_scene",
+		std::vector<std::string>{ "basic_mesh" }, std::vector<std::string>{ "basic_light" });
 
 	camera = std::make_shared<RenderFramework::TargetCamera>();
 	camera->setProjection(glm::quarter_pi<float>(),
